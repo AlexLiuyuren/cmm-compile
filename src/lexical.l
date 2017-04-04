@@ -15,12 +15,12 @@ SEMI ;
 COMMA ,
 ASSIGNOP =
 RELOP >|<|>=|<=|==|!=
-PLUS +
+PLUS \+
 MINUS -
-STAR *
-DIV /
+STAR \*
+DIV \/
 AND &&
-OR ||
+OR \|\|
 DOT \.
 NOT !
 
@@ -41,16 +41,22 @@ WHILE while
 {SPACE} {printf(" ");}
 {TYPE} {printf("TYPE");}
 
+{STRUCT} {printf("struct");}
+{RETURN} {printf("return");}
+{IF} {printf("if");}
+{ELSE} {printf("else");}
+{WHILE} {printf("while");}
+
 {INT} {printf("INT");}
 {INT_OCT} {printf("INT_OCT");}
 {INT_HEX} {printf("INT_HEX");}
-{FLOAT} {printf("FLOAT";)} 
-{SCI} {printf("SCI";)}
-{ID} {printf("ID";)}
+{FLOAT} { printf("FLOAT"); } 
+{SCI} {printf("SCI");}
+{ID} {printf("ID");}
 
-{SEMI} {printf("SEMI");}
-{COMMA} {printf("COMMA");}
-{ASSIGNOP} {printf("ASSIGNOP");}
+{SEMI} {printf(";");}
+{COMMA} {printf(",");}
+{ASSIGNOP} {printf("=");}
 {RELOP} {printf("RELOP");}
 {PLUS} {printf("+");}
 {MINUS} {printf("-");}
@@ -69,10 +75,6 @@ WHILE while
 {LC} {printf("{");}
 {RC} {printf("}");}
 
-{STRUCT} {printf("struct");}
-{RETURN} {printf("return");}
-{IF} {printf("if");}
-{ELSE} {printf("else");}
-{WHILE} {printf("while");}
+. {printf("Error type A at line %d: Mysterious character \'%s\'. [lexical error] \n", yylineno, yytext);}
 %%
 
