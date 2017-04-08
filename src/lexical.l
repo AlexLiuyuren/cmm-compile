@@ -1,3 +1,29 @@
+%{
+	#include <stdlib.h>
+	#include "syntax_tree.h"
+	void procToken(char *symbol){
+		TreeNode *p = createTreeNode();
+		strcpy(p->symbol, symbol);
+		strcpy(p->text, yytext);
+		p->lineno = yylineno;
+		if (strcmp(symbol, "INT") == 0){
+			p->int_value = atoi(yytext); 
+		}else if (strcmp(symbol, "INT_OCT") == 0){
+			strcmp(p->symbol, "INT");
+			p->int_value = strtol(yytext, NULL, 8);
+		}else if (strcmp(symbol, "INT_HEX") == 0){
+			strcmp(p->symbol, "INT");
+			p->int_value = strtol(yytext, NULL, 16);
+		}else if (strcmp(symbol, "FLOAT") == 0){
+			p->float_value = atof(yytext);
+		}else if (strcmp(symbol, "SCI") == 0){
+			strcmp(p->symbol, "FLOAT");
+			p->float_value = atof(yytext);
+		}
+		yylval = p;
+	}
+%}
+
 TAB \t
 SPACE " "
 TYPE int|float
