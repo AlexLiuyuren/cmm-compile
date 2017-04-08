@@ -22,10 +22,36 @@ TreeNode *createTreeNode(int arity, ...){
 	return p;
 }
 
-void printTree(TreeNode *p){
-	//TODO: 
+void printTree(TreeNode *p, int depth){
+	printf("%*s%s", depth * kIndent, "", p->symbol);
+	if (p->arity == 0){
+		if (strcmp(p->symbol, "TYPE") == 0){
+			printf(": %s\n", p->text);
+		}else if (strcmp(p->symbol, "ID") == 0){
+			printf(": %s\n", p->text);
+		}else if (strcmp(p->symbol, "RELOP") == 0){
+			printf(": %s\n", p->text);
+		}else if (strcmp(p->symbol, "INT") == 0){
+			printf(": %d\n", p->int_value);
+		}else if (strcmp(p->symbol, "FLOAT") == 0){
+			printf(": %f\n", p->float_value);
+		}else{
+			printf("\n");
+		}	
+	}else{
+		printf(" (%d)\n", p->lineno);
+		for (int i = 0; i < p->arity; i++){
+			printTree(p->children[i], depth + 1);
+		}
+	}
+	return;
 }
 
 void deleteTreeNode(TreeNode *p){
-	//TODO
+	for (int i = 0; i < p->arity; i++){
+		deleteTreeNode(p->children[i]);
+	}
+	free(p);
+	p = NULL;
+	return;
 }

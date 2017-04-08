@@ -2,7 +2,8 @@
 #define SYNTAX_TREE_H_
 
 #define kMaxLen 32 //Max length of symbol
-#define kMaxChildren 15 //Max number of children 
+#define kMaxChildren 15 //Max number of children
+#define kIndent 2
 typedef struct TreeNode{
 	char symbol[kMaxLen], text[kMaxLen];
 	int lineno;
