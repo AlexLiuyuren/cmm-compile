@@ -14,6 +14,9 @@
 		errorState = true;
 	}
 %}
+/*Declared tokens*/
+/*%token TYPE*/
+
 %right ASSIGNOP
 %left OR
 %left AND
@@ -25,7 +28,7 @@
 
 %nonassoc LOWER_THAN_ELSE
 %nonassoc IF ELSE WHILE STRUCT RETURN
-%nonassoc INT INT_OCT INT_HEX FLOAT SCI ID
+%nonassoc INT INT_OCT INT_HEX FLOAT SCI ID TYPE
 %nonassoc SEMI COMMA
 
 %%
@@ -37,7 +40,7 @@ ExtDef : Specifier ExtDecList SEMI {$$ = procTreeNode(createTreeNode(3, $1, $2, 
 	| Specifier SEMI {$$ = procTreeNode(createTreeNode(2, $1, $2), "ExtDef");}
 	| Specifier FunDec CompSt {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "ExtDef");};
 ExtDecList : VarDec COMMA ExtDecList {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "ExtDecList");} 
-	| /*empty*/ {$$ = NULL};
+	| VarDec {$$ = procTreeNode(createTreeNode(1, $1), "ExtDecList")};
 
 /*Specifiers*/
 Specifier : TYPE {$$ = procTreeNode(createTreeNode(1, $1), "Specifier");}
@@ -50,7 +53,7 @@ Tag : ID {$$ = procTreeNode(createTreeNode(1, $1), "Tag");};
 
 /*Declarators*/
 VarDec : ID {$$ = procTreeNode(createTreeNode(1, $1), "VarDec");}
-	| varDec LB INT RB {$$ = procTreeNode(createTreeNode(4, $1, $2, $3, $4), "VarDec");};
+	| VarDec LB INT RB {$$ = procTreeNode(createTreeNode(4, $1, $2, $3, $4), "VarDec");};
 FunDec : ID LP VarList RP {$$ = procTreeNode(createTreeNode(4, $1, $2, $3, $4), "FunDec");};
 VarList : ParamDec {$$ = procTreeNode(createTreeNode(1, $1), "VarList");}
 	| ParamDec COMMA VarList {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "VarList");};
@@ -63,14 +66,14 @@ StmtList : Stmt StmtList {$$ = procTreeNode(createTreeNode(2, $1, $2), "StmtList
 Stmt : Exp SEMI {$$ = procTreeNode(createTreeNode(2, $1, $2), "Stmt");}
 	| CompSt {$$ = procTreeNode(createTreeNode(1, $1), "Stmt");}
 	| RETURN Exp SEMI {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "Stmt");}
-	| IF LP Exp RP Stmt {$$ = procTreeNode(createTreeNode(5, $1, $2, $3, $4), "Stmt");}
+	| IF LP Exp RP Stmt %prec LOWER_THAN_ELSE {$$ = procTreeNode(createTreeNode(5, $1, $2, $3, $4), "Stmt");}
 	| IF LP Exp RP Stmt ELSE Stmt {$$ = procTreeNode(createTreeNode(7, $1, $2, $3, $4, $5, $6, $7), "Stmt");}
 	| WHILE LP Exp RP Stmt{$$ = procTreeNode(createTreeNode(5, $1, $2, $3, $4, $5), "Stmt");};
 
 /*Local Definition*/
 DefList : Def DefList {$$ = procTreeNode(createTreeNode(2, $1, $2), "DefList");}
 	| /*empty*/ {$$ = NULL};
-Def : Specifier DecList {$$ = procTreeNode(createTreeNode(2, $1, $2), "Def");};
+Def : Specifier DecList SEMI {$$ = procTreeNode(createTreeNode(3, $1, $2$3), "Def");};
 DecList : Dec {$$ = procTreeNode(createTreeNode(1, $1), "DecList");} 
 	| Dec COMMA DecList{$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "DecList" );};
 Dec : VarDec {$$ = procTreeNode(createTreeNode(1, $1), "Dec");}
@@ -82,6 +85,9 @@ Exp : Exp ASSIGNOP Exp {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "Exp");
 	| Exp OR Exp {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "Exp");}
 	| Exp RELOP Exp {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "Exp");}
 	| Exp PLUS Exp {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "Exp");}
+	| Exp MINUS Exp {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "Exp");}
+	| Exp STAR Exp {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "Exp");}
+	| Exp DIV Exp {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "Exp");}
 	| LP Exp RP {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "Exp");}
 	| MINUS Exp {$$ = procTreeNode(createTreeNode(2, $1, $2), "Exp");}
 	| NOT Exp {$$ = procTreeNode(createTreeNode(2, $1, $2), "Exp");}

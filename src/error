@@ -1,0 +1,103 @@
+lexical.l:5:2: error: unknown type name ‘YYSTYPE’
+  extern YYSTYPE yylval;
+  ^
+lexical.l: In function ‘procToken’:
+lexical.l:25:10: warning: assignment makes integer from pointer without a cast [enabled by default]
+   yylval = p;
+          ^
+lexical.l: In function ‘yylex’:
+lexical.l:74:12: error: ‘TYPE’ undeclared (first use in this function)
+ {TYPE} {procToken(TYPE, "TYPE"); return TYPE;}
+            ^
+lexical.l:74:12: note: each undeclared identifier is reported only once for each function it appears in
+lexical.l:76:12: error: ‘STRUCT’ undeclared (first use in this function)
+ {STRUCT} {procToken(STRUCT, "STRUCT"); return STRUCT;}
+            ^
+lexical.l:77:12: error: ‘RETURN’ undeclared (first use in this function)
+ {RETURN} {procToken(RETURN, "RETURN"); return RETURN;}
+            ^
+lexical.l:78:12: error: ‘IF’ undeclared (first use in this function)
+ {IF} {procToken(IF, "IF"); return IF;}
+            ^
+lexical.l:79:12: error: ‘ELSE’ undeclared (first use in this function)
+ {ELSE} {procToken(ELSE, "ELSE"); return ELSE;}
+            ^
+lexical.l:80:12: error: ‘WHILE’ undeclared (first use in this function)
+ {WHILE} {procToken(WHILE, "WHILE"); return WHILE;}
+            ^
+lexical.l:82:12: error: ‘INT’ undeclared (first use in this function)
+ {INT} {procToken(INT, "INT"); return INT;}
+            ^
+lexical.l:83:12: error: ‘INT_OCT’ undeclared (first use in this function)
+ {INT_OCT} {procToken(INT_OCT, "INT_OPT"); return INT;}
+            ^
+lexical.l:84:12: error: ‘INT_HEX’ undeclared (first use in this function)
+ {INT_HEX} {procToken(INT_HEX, "INT_HEX"); return INT;}
+            ^
+lexical.l:85:12: error: ‘FLOAT’ undeclared (first use in this function)
+ {FLOAT} {procToken(FLOAT, "FLOAT"); return FLOAT;} 
+            ^
+lexical.l:86:12: error: ‘SCI’ undeclared (first use in this function)
+ {SCI} {procToken(SCI, "SCI"); return FLOAT;}
+            ^
+lexical.l:87:12: error: ‘ID’ undeclared (first use in this function)
+ {ID} {procToken(ID, "ID"); return ID:}
+            ^
+lexical.l:87:32: error: expected ‘;’ before ‘:’ token
+ {ID} {procToken(ID, "ID"); return ID:}
+                                ^
+lexical.l:89:12: error: ‘SEMI’ undeclared (first use in this function)
+ {SEMI} {procToken(SEMI, "SEMI"); return SEMI;}
+            ^
+lexical.l:90:12: error: ‘COMMA’ undeclared (first use in this function)
+ {COMMA} {procToken(COMMA, "COMMA"); return COMMA;}
+            ^
+lexical.l:91:12: error: ‘ASSIGNOP’ undeclared (first use in this function)
+ {ASSIGNOP} {procToken(ASSIGNOP, "ASSIGNOP"); return ASSIGNOP;}
+            ^
+lexical.l:92:12: error: ‘RELOP’ undeclared (first use in this function)
+ {RELOP} {procToken(RELOP, "RELOP"); return RELOP;}
+            ^
+lexical.l:93:12: error: ‘PLUS’ undeclared (first use in this function)
+ {PLUS} {procToken(PLUS, "PLUS"); return PLUS;}
+            ^
+lexical.l:94:12: error: ‘MINUS’ undeclared (first use in this function)
+ {MINUS} {procToken(MINUS, "MINUS"); return MINUS;}
+            ^
+lexical.l:95:12: error: ‘STAR’ undeclared (first use in this function)
+ {STAR} {procToken(STAR, "STAR"); return STAR;}
+            ^
+lexical.l:96:12: error: ‘DIV’ undeclared (first use in this function)
+ {DIV} {procToken(DIV, "DIV"); return DIV;}
+            ^
+lexical.l:97:12: error: ‘AND’ undeclared (first use in this function)
+ {AND} {procToken(AND, "AND"); return AND;}
+            ^
+lexical.l:98:12: error: ‘OR’ undeclared (first use in this function)
+ {OR} {procToken(OR, "OR"); return OR;}
+            ^
+lexical.l:99:12: error: ‘DOT’ undeclared (first use in this function)
+ {DOT} {procToken(DOT, "DOT"); return DOT;}
+            ^
+lexical.l:100:12: error: ‘NOT’ undeclared (first use in this function)
+ {NOT} {procToken(NOT, "NOT"); return NOT;}
+            ^
+lexical.l:102:12: error: ‘LP’ undeclared (first use in this function)
+ {LP} {procToken(LP, "LP"); return LP;}
+            ^
+lexical.l:103:12: error: ‘RP’ undeclared (first use in this function)
+ {RP} {procToken(RP, "RP"); return RP;}
+            ^
+lexical.l:104:12: error: ‘LB’ undeclared (first use in this function)
+ {LB} {procToken(LB, "LB"); return LB;}
+            ^
+lexical.l:105:12: error: ‘RB’ undeclared (first use in this function)
+ {RB} {procToken(RB, "RB"); return RB;}
+            ^
+lexical.l:106:12: error: ‘LC’ undeclared (first use in this function)
+ {LC} {procToken(LC, "LC"); return LC;}
+            ^
+lexical.l:107:12: error: ‘RC’ undeclared (first use in this function)
+ {RC} {procToken(RC, "RC"); return RC;}
+            ^
+make: *** [scanner] Error 1

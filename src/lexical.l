@@ -1,7 +1,9 @@
 %{
 	#include <stdlib.h>
 	#include "syntax_tree.h"
+	#include "syntax.tab.h"
 	//token is an enum type
+	//extern YYSTYPE yylval;
 	void procToken(int token, char *symbol){
 		TreeNode *p = createTreeNode();
 		strcpy(p->symbol, symbol);
