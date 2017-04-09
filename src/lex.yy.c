@@ -560,15 +560,15 @@ char *yytext;
 		if (strcmp(symbol, "INT") == 0){
 			p->int_value = atoi(yytext); 
 		}else if (strcmp(symbol, "INT_OCT") == 0){
-			strcmp(p->symbol, "INT");
+			strcpy(p->symbol, "INT");
 			p->int_value = strtol(yytext, NULL, 8);
 		}else if (strcmp(symbol, "INT_HEX") == 0){
-			strcmp(p->symbol, "INT");
+			strcpy(p->symbol, "INT");
 			p->int_value = strtol(yytext, NULL, 16);
 		}else if (strcmp(symbol, "FLOAT") == 0){
 			p->float_value = atof(yytext);
 		}else if (strcmp(symbol, "SCI") == 0){
-			strcmp(p->symbol, "FLOAT");
+			strcpy(p->symbol, "FLOAT");
 			p->float_value = atof(yytext);
 		}
 		yylval = p;
@@ -910,7 +910,7 @@ YY_RULE_SETUP
 case 11:
 YY_RULE_SETUP
 #line 90 "lexical.l"
-{procToken(INT_OCT, "INT_OPT"); return INT;}
+{procToken(INT_OCT, "INT_OCT"); return INT;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP

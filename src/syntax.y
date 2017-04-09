@@ -13,6 +13,7 @@
 /*Declared tokens*/
 /*%token TYPE*/
 %locations
+%define parse.error verbose
 %right ASSIGNOP
 %left OR
 %left AND
@@ -29,7 +30,14 @@
 
 %%
 /* High level Definition*/
-Program : ExtDefList {$$ = procTreeNode(createTreeNode(1, $1), "Program");};
+Program : ExtDefList {
+	$$ = procTreeNode(createTreeNode(1, $1), "Program");
+	if (errorState == false){
+		printTree($$, 0);
+		fflush(stdout);
+		deleteTreeNode($$);
+	}
+	};
 ExtDefList : ExtDef ExtDefList {$$ = procTreeNode(createTreeNode(2, $1, $2), "ExtDefList");} 
 	| /*empty*/ {$$ = NULL;}; 
 ExtDef : Specifier ExtDecList SEMI {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "ExtDef");}
@@ -57,7 +65,13 @@ VarList : ParamDec {$$ = procTreeNode(createTreeNode(1, $1), "VarList");}
 ParamDec : Specifier VarDec {$$ = procTreeNode(createTreeNode(2, $1, $2), "ParamDec");};
 
 /*Statements*/
-CompSt : LC DefList StmtList RC{$$ = procTreeNode(createTreeNode(4, $1, $2, $3, $4), "CompSt");};
+CompSt : LC DefList StmtList RC{$$ = procTreeNode(createTreeNode(4, $1, $2, $3, $4), "CompSt");}
+	| error RC{
+		yyerrok;
+		errorState = true;
+		$$ = procTreeNode(createTreeNode(0), "CompSt");
+	}
+	;
 StmtList : Stmt StmtList {$$ = procTreeNode(createTreeNode(2, $1, $2), "StmtList");}
 	| /*empty*/ {$$ = NULL;};
 Stmt : Exp SEMI {$$ = procTreeNode(createTreeNode(2, $1, $2), "Stmt");}
@@ -65,7 +79,13 @@ Stmt : Exp SEMI {$$ = procTreeNode(createTreeNode(2, $1, $2), "Stmt");}
 	| RETURN Exp SEMI {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "Stmt");}
 	| IF LP Exp RP Stmt %prec LOWER_THAN_ELSE {$$ = procTreeNode(createTreeNode(5, $1, $2, $3, $4), "Stmt");}
 	| IF LP Exp RP Stmt ELSE Stmt {$$ = procTreeNode(createTreeNode(7, $1, $2, $3, $4, $5, $6, $7), "Stmt");}
-	| WHILE LP Exp RP Stmt{$$ = procTreeNode(createTreeNode(5, $1, $2, $3, $4, $5), "Stmt");};
+	| WHILE LP Exp RP Stmt{$$ = procTreeNode(createTreeNode(5, $1, $2, $3, $4, $5), "Stmt");}
+	| error SEMI{
+		yyerrok;
+		errorState = true;
+		$$ = procTreeNode(createTreeNode(0), "Stmt");
+	}
+	;
 
 /*Local Definition*/
 DefList : Def DefList {$$ = procTreeNode(createTreeNode(2, $1, $2), "DefList");}
@@ -95,6 +115,12 @@ Exp : Exp ASSIGNOP Exp {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "Exp");
 	| INT {$$ = procTreeNode(createTreeNode(1, $1), "Exp");}
 	| FLOAT {$$ = procTreeNode(createTreeNode(1, $1), "Exp");}
 	| ID {$$ = procTreeNode(createTreeNode(1, $1), "Exp");}
+	| error RP{
+		yyerrok;
+		errorState = true;
+		$$ = procTreeNode(createTreeNode(0), "Exp");
+	}
+	;
 	;
 Args : Exp COMMA Args {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "Args");}
 	| Exp {$$ = procTreeNode(createTreeNode(1, $1), "Args");}

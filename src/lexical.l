@@ -17,15 +17,15 @@
 		if (strcmp(symbol, "INT") == 0){
 			p->int_value = atoi(yytext); 
 		}else if (strcmp(symbol, "INT_OCT") == 0){
-			strcmp(p->symbol, "INT");
+			strcpy(p->symbol, "INT");
 			p->int_value = strtol(yytext, NULL, 8);
 		}else if (strcmp(symbol, "INT_HEX") == 0){
-			strcmp(p->symbol, "INT");
+			strcpy(p->symbol, "INT");
 			p->int_value = strtol(yytext, NULL, 16);
 		}else if (strcmp(symbol, "FLOAT") == 0){
 			p->float_value = atof(yytext);
 		}else if (strcmp(symbol, "SCI") == 0){
-			strcmp(p->symbol, "FLOAT");
+			strcpy(p->symbol, "FLOAT");
 			p->float_value = atof(yytext);
 		}
 		yylval = p;
@@ -87,7 +87,7 @@ WHILE while
 {WHILE} {procToken(WHILE, "WHILE"); return WHILE;}
 
 {INT} {procToken(INT, "INT"); return INT;}
-{INT_OCT} {procToken(INT_OCT, "INT_OPT"); return INT;}
+{INT_OCT} {procToken(INT_OCT, "INT_OCT"); return INT;}
 {INT_HEX} {procToken(INT_HEX, "INT_HEX"); return INT;}
 {FLOAT} {procToken(FLOAT, "FLOAT"); return FLOAT;} 
 {SCI} {procToken(SCI, "SCI"); return FLOAT;}
