@@ -113,7 +113,10 @@ WHILE while
 {LC} {procToken(LC, "LC"); return LC;}
 {RC} {procToken(RC, "RC"); return RC;}
 
-. {printf("Error type A at line %d: Mysterious character \'%s\'. [lexical error] \n", yylineno, yytext);}
+. {
+	errorState = true;	
+	printf("Error type A at line %d: Mysterious character \'%s\'. [lexical error] \n", yylineno, yytext);
+}
 %%
 
 /*
