@@ -1,7 +1,8 @@
 %{
 	#include <stdlib.h>
 	#include "syntax_tree.h"
-	void procToken(char *symbol){
+	//token is an enum type
+	void procToken(int token, char *symbol){
 		TreeNode *p = createTreeNode();
 		strcpy(p->symbol, symbol);
 		strcpy(p->text, yytext);
@@ -26,6 +27,8 @@
 
 TAB \t
 SPACE " "
+ENTER "\n"
+
 TYPE int|float
 
 digit [0-9]
@@ -63,8 +66,52 @@ IF if
 ELSE else
 WHILE while
 %%
+{TAB} {;}
+{SPACE} {;}
+{ENTER} {;}
+
+{TYPE} {procToken(TYPE, "TYPE"); return TYPE;}
+
+{STRUCT} {procToken(STRUCT, "STRUCT"); return STRUCT;}
+{RETURN} {procToken(RETURN, "RETURN"); return RETURN;}
+{IF} {procToken(IF, "IF"); return IF;}
+{ELSE} {procToken(ELSE, "ELSE"); return ELSE;}
+{WHILE} {procToken(WHILE, "WHILE"); return WHILE;}
+
+{INT} {procToken(INT, "INT"); return INT;}
+{INT_OCT} {procToken(INT_OCT, "INT_OPT"); return INT;}
+{INT_HEX} {procToken(INT_HEX, "INT_HEX"); return INT;}
+{FLOAT} {procToken(FLOAT, "FLOAT"); return FLOAT;} 
+{SCI} {procToken(SCI, "SCI"); return FLOAT;}
+{ID} {procToken(ID, "ID"); return ID:}
+
+{SEMI} {procToken(SEMI, "SEMI"); return SEMI;}
+{COMMA} {procToken(COMMA, "COMMA"); return COMMA;}
+{ASSIGNOP} {procToken(ASSIGNOP, "ASSIGNOP"); return ASSIGNOP;}
+{RELOP} {procToken(RELOP, "RELOP"); return RELOP;}
+{PLUS} {procToken(PLUS, "PLUS"); return PLUS;}
+{MINUS} {procToken(MINUS, "MINUS"); return MINUS;}
+{STAR} {procToken(STAR, "STAR"); return STAR;}
+{DIV} {procToken(DIV, "DIV"); return DIV;}
+{AND} {procToken(AND, "AND"); return AND;}
+{OR} {procToken(OR, "OR"); return OR;}
+{DOT} {procToken(DOT, "DOT"); return DOT;}
+{NOT} {procToken(NOT, "NOT"); return NOT;}
+
+{LP} {procToken(LP, "LP"); return LP;}
+{RP} {procToken(RP, "RP"); return RP;}
+{LB} {procToken(LB, "LB"); return LB;}
+{RB} {procToken(RB, "RB"); return RB;}
+{LC} {procToken(LC, "LC"); return LC;}
+{RC} {procToken(RC, "RC"); return RC;}
+
+. {printf("Error type A at line %d: Mysterious character \'%s\'. [lexical error] \n", yylineno, yytext);}
+%%
+
+/*
 {TAB} {printf("\t");}
 {SPACE} {printf(" ");}
+{ENTER} {printf("\n");}
 {TYPE} {printf("TYPE");}
 
 {STRUCT} {printf("struct");}
@@ -92,7 +139,6 @@ WHILE while
 {OR} {printf("||");}
 {DOT} {printf(".");}
 {NOT} {printf("!");}
-{TYPE} {printf("TYPE");}
 
 {LP} {printf("(");}
 {RP} {printf(")");}
@@ -102,5 +148,5 @@ WHILE while
 {RC} {printf("}");}
 
 . {printf("Error type A at line %d: Mysterious character \'%s\'. [lexical error] \n", yylineno, yytext);}
-%%
+*/
 

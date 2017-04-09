@@ -1,5 +1,7 @@
 %{
 	#include <stdio.h>
+	#include <string.h>
+	#include "syntax_tree.h"
 	extern int yylineno;
 	TreeNode *procTreeNode(TreeNode *p, char *symbol){
 		strcpy(p->symbol, symbol);
@@ -48,8 +50,8 @@ Tag : ID {$$ = procTreeNode(createTreeNode(1, $1), "Tag");};
 
 /*Declarators*/
 VarDec : ID {$$ = procTreeNode(createTreeNode(1, $1), "VarDec");}
-	| varDec LB INT RB{$$ = procTreeNode(createTreeNode(4, $1, $2, $3, $4), "VarDec");};
-FunDec : ID LP VarList RP{$$ = procTreeNode(createTreeNode(4, $1, $2, $3, $4), "FunDec");};
+	| varDec LB INT RB {$$ = procTreeNode(createTreeNode(4, $1, $2, $3, $4), "VarDec");};
+FunDec : ID LP VarList RP {$$ = procTreeNode(createTreeNode(4, $1, $2, $3, $4), "FunDec");};
 VarList : ParamDec {$$ = procTreeNode(createTreeNode(1, $1), "VarList");}
 	| ParamDec COMMA VarList {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "VarList");};
 ParamDec : Specifier VarDec {$$ = procTreeNode(createTreeNode(2, $1, $2), "ParamDec");};
@@ -95,6 +97,6 @@ Args : Exp COMMA Args {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "Args");
 	| Exp {$$ = procTreeNode(createTreeNode(1, $1), "Args");}
 	;
 %%
-
+#include "lex.yy.c"
 
 

@@ -380,14 +380,14 @@ struct yy_trans_info
 	};
 static yyconst flex_int16_t yy_accept[78] =
     {   0,
-        0,    0,   36,   34,    1,   35,    2,   26,   34,   28,
-       29,   21,   19,   16,   20,   25,   22,    9,    9,   15,
-       18,   17,   18,   14,   30,   31,   14,   14,   14,   14,
-       14,   14,   32,   34,   33,   18,   23,    0,    0,   10,
-        0,    0,    9,   14,   14,   14,    6,   14,   14,   14,
-       14,   24,    0,   12,    0,   11,   14,   14,    3,   14,
-       14,   14,    0,   13,   13,    7,   14,   14,   14,   14,
-       13,   14,   14,    8,    5,    4,    0
+        0,    0,   36,   34,    1,    3,    2,   27,   34,   28,
+       29,   22,   20,   17,   21,   26,   23,   10,   10,   16,
+       19,   18,   19,   15,   30,   31,   15,   15,   15,   15,
+       15,   15,   32,   34,   33,   19,   24,    0,    0,   11,
+        0,    0,   10,   15,   15,   15,    7,   15,   15,   15,
+       15,   25,    0,   13,    0,   12,   15,   15,    4,   15,
+       15,   15,    0,   14,   14,    8,   15,   15,   15,   15,
+       14,   15,   15,    9,    6,    5,    0
     } ;
 
 static yyconst flex_int32_t yy_ec[256] =
@@ -516,7 +516,32 @@ int yy_flex_debug = 0;
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
 #line 1 "lexical.l"
-#line 520 "lex.yy.c"
+#line 2 "lexical.l"
+	#include <stdlib.h>
+	#include "syntax_tree.h"
+	//token is an enum type
+	void procToken(int token, char *symbol){
+		TreeNode *p = createTreeNode();
+		strcpy(p->symbol, symbol);
+		strcpy(p->text, yytext);
+		p->lineno = yylineno;
+		if (strcmp(symbol, "INT") == 0){
+			p->int_value = atoi(yytext); 
+		}else if (strcmp(symbol, "INT_OCT") == 0){
+			strcmp(p->symbol, "INT");
+			p->int_value = strtol(yytext, NULL, 8);
+		}else if (strcmp(symbol, "INT_HEX") == 0){
+			strcmp(p->symbol, "INT");
+			p->int_value = strtol(yytext, NULL, 16);
+		}else if (strcmp(symbol, "FLOAT") == 0){
+			p->float_value = atof(yytext);
+		}else if (strcmp(symbol, "SCI") == 0){
+			strcmp(p->symbol, "FLOAT");
+			p->float_value = atof(yytext);
+		}
+		yylval = p;
+	}
+#line 545 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -730,9 +755,9 @@ YY_DECL
 		}
 
 	{
-#line 39 "lexical.l"
+#line 68 "lexical.l"
 
-#line 736 "lex.yy.c"
+#line 761 "lex.yy.c"
 
 	while ( 1 )		/* loops until end-of-file is reached */
 		{
@@ -791,180 +816,181 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 40 "lexical.l"
-{printf("\t");}
+#line 69 "lexical.l"
+{;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 41 "lexical.l"
-{printf(" ");}
+#line 70 "lexical.l"
+{;}
 	YY_BREAK
 case 3:
+/* rule 3 can match eol */
 YY_RULE_SETUP
-#line 42 "lexical.l"
-{printf("TYPE");}
+#line 71 "lexical.l"
+{;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 44 "lexical.l"
-{printf("struct");}
+#line 73 "lexical.l"
+{procToken(TYPE, "TYPE"); return TYPE;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 45 "lexical.l"
-{printf("return");}
+#line 75 "lexical.l"
+{procToken(STRUCT, "STRUCT"); return STRUCT;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 46 "lexical.l"
-{printf("if");}
+#line 76 "lexical.l"
+{procToken(RETURN, "RETURN"); return RETURN;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 47 "lexical.l"
-{printf("else");}
+#line 77 "lexical.l"
+{procToken(IF, "IF"); return IF;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 48 "lexical.l"
-{printf("while");}
+#line 78 "lexical.l"
+{procToken(ELSE, "ELSE"); return ELSE;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 50 "lexical.l"
-{printf("INT");}
+#line 79 "lexical.l"
+{procToken(WHILE, "WHILE"); return WHILE;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 51 "lexical.l"
-{printf("INT_OCT");}
+#line 81 "lexical.l"
+{procToken(INT, "INT"); return INT;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 52 "lexical.l"
-{printf("INT_HEX");}
+#line 82 "lexical.l"
+{procToken(INT_OCT, "INT_OPT"); return INT;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 53 "lexical.l"
-{ printf("FLOAT"); } 
+#line 83 "lexical.l"
+{procToken(INT_HEX, "INT_HEX"); return INT;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 54 "lexical.l"
-{printf("SCI");}
+#line 84 "lexical.l"
+{procToken(FLOAT, "FLOAT"); return FLOAT;} 
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 55 "lexical.l"
-{printf("ID");}
+#line 85 "lexical.l"
+{procToken(SCI, "SCI"); return FLOAT;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 57 "lexical.l"
-{printf(";");}
+#line 86 "lexical.l"
+{procToken(ID, "ID"); return ID:}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 58 "lexical.l"
-{printf(",");}
+#line 88 "lexical.l"
+{procToken(SEMI, "SEMI"); return SEMI;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 59 "lexical.l"
-{printf("=");}
+#line 89 "lexical.l"
+{procToken(COMMA, "COMMA"); return COMMA;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 60 "lexical.l"
-{printf("RELOP");}
+#line 90 "lexical.l"
+{procToken(ASSIGNOP, "ASSIGNOP"); return ASSIGNOP;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 61 "lexical.l"
-{printf("+");}
+#line 91 "lexical.l"
+{procToken(RELOP, "RELOP"); return RELOP;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 62 "lexical.l"
-{printf("-");}
+#line 92 "lexical.l"
+{procToken(PLUS, "PLUS"); return PLUS;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 63 "lexical.l"
-{printf("*");}
+#line 93 "lexical.l"
+{procToken(MINUS, "MINUS"); return MINUS;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 64 "lexical.l"
-{printf("/");}
+#line 94 "lexical.l"
+{procToken(STAR, "STAR"); return STAR;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 65 "lexical.l"
-{printf("&&");}
+#line 95 "lexical.l"
+{procToken(DIV, "DIV"); return DIV;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 66 "lexical.l"
-{printf("||");}
+#line 96 "lexical.l"
+{procToken(AND, "AND"); return AND;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 67 "lexical.l"
-{printf(".");}
+#line 97 "lexical.l"
+{procToken(OR, "OR"); return OR;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 68 "lexical.l"
-{printf("!");}
+#line 98 "lexical.l"
+{procToken(DOT, "DOT"); return DOT;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 69 "lexical.l"
-{printf("TYPE");}
+#line 99 "lexical.l"
+{procToken(NOT, "NOT"); return NOT;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 71 "lexical.l"
-{printf("(");}
+#line 101 "lexical.l"
+{procToken(LP, "LP"); return LP;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 72 "lexical.l"
-{printf(")");}
+#line 102 "lexical.l"
+{procToken(RP, "RP"); return RP;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 73 "lexical.l"
-{printf("[");}
+#line 103 "lexical.l"
+{procToken(LB, "LB"); return LB;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 74 "lexical.l"
-{printf("]");}
+#line 104 "lexical.l"
+{procToken(RB, "RB"); return RB;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 75 "lexical.l"
-{printf("{");}
+#line 105 "lexical.l"
+{procToken(LC, "LC"); return LC;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 76 "lexical.l"
-{printf("}");}
+#line 106 "lexical.l"
+{procToken(RC, "RC"); return RC;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 78 "lexical.l"
+#line 108 "lexical.l"
 {printf("Error type A at line %d: Mysterious character \'%s\'. [lexical error] \n", yylineno, yytext);}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 79 "lexical.l"
+#line 109 "lexical.l"
 ECHO;
 	YY_BREAK
-#line 968 "lex.yy.c"
+#line 994 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1959,8 +1985,50 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 78 "lexical.l"
+#line 108 "lexical.l"
 
 
+
+/*
+{TAB} {printf("\t");}
+{SPACE} {printf(" ");}
+{ENTER} {printf("\n");}
+{TYPE} {printf("TYPE");}
+
+{STRUCT} {printf("struct");}
+{RETURN} {printf("return");}
+{IF} {printf("if");}
+{ELSE} {printf("else");}
+{WHILE} {printf("while");}
+
+{INT} {printf("INT");}
+{INT_OCT} {printf("INT_OCT");}
+{INT_HEX} {printf("INT_HEX");}
+{FLOAT} { printf("FLOAT"); } 
+{SCI} {printf("SCI");}
+{ID} {printf("ID");}
+
+{SEMI} {printf(";");}
+{COMMA} {printf(",");}
+{ASSIGNOP} {printf("=");}
+{RELOP} {printf("RELOP");}
+{PLUS} {printf("+");}
+{MINUS} {printf("-");}
+{STAR} {printf("*");}
+{DIV} {printf("/");}
+{AND} {printf("&&");}
+{OR} {printf("||");}
+{DOT} {printf(".");}
+{NOT} {printf("!");}
+
+{LP} {printf("(");}
+{RP} {printf(")");}
+{LB} {printf("[");}
+{RB} {printf("]");}
+{LC} {printf("{");}
+{RC} {printf("}");}
+
+. {printf("Error type A at line %d: Mysterious character \'%s\'. [lexical error] \n", yylineno, yytext);}
+*/
 
 
