@@ -2,10 +2,14 @@
 	#include "common.h"
 	#include "syntax_tree.h"
 	#include "syntax.tab.h"
-	//token is an enum type
-	//extern YYSTYPE yylval;
+	int yycolumn = 1;
+#define YY_USER_ACTION \
+	yylloc.first_line = yylloc.last_line = yylineno; \
+	yylloc.first_column = yycolumn; \
+	yylloc.last_column = yycolumn + yyleng - 1; \
+	yycolumn += yyleng;
 	int errorState = false;
-	void procToken(int token, char *symbol){
+		void procToken(int token, char *symbol){
 		TreeNode *p = createTreeNode(0);
 		strcpy(p->symbol, symbol);
 		strcpy(p->text, yytext);
@@ -27,6 +31,7 @@
 		yylval = p;
 	}
 %}
+%option yylineno
 
 TAB \t
 SPACE " "
@@ -71,7 +76,7 @@ WHILE while
 %%
 {TAB} {;}
 {SPACE} {;}
-{ENTER} {;}
+{ENTER} {yycolumn = 1;}
 
 {TYPE} {procToken(TYPE, "TYPE"); return TYPE;}
 

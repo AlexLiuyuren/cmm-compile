@@ -174,8 +174,27 @@ extern FILE *yyin, *yyout;
 #define EOB_ACT_END_OF_FILE 1
 #define EOB_ACT_LAST_MATCH 2
 
-    #define YY_LESS_LINENO(n)
-    #define YY_LINENO_REWIND_TO(ptr)
+    /* Note: We specifically omit the test for yy_rule_can_match_eol because it requires
+     *       access to the local variable yy_act. Since yyless() is a macro, it would break
+     *       existing scanners that call yyless() from OUTSIDE yylex. 
+     *       One obvious solution it to make yy_act a global. I tried that, and saw
+     *       a 5% performance hit in a non-yylineno scanner, because yy_act is
+     *       normally declared as a register variable-- so it is not worth it.
+     */
+    #define  YY_LESS_LINENO(n) \
+            do { \
+                int yyl;\
+                for ( yyl = n; yyl < yyleng; ++yyl )\
+                    if ( yytext[yyl] == '\n' )\
+                        --yylineno;\
+            }while(0)
+    #define YY_LINENO_REWIND_TO(dst) \
+            do {\
+                const char *p;\
+                for ( p = yy_cp-1; p >= (dst); --p)\
+                    if ( *p == '\n' )\
+                        --yylineno;\
+            }while(0)
     
 /* Return all but the first "n" matched characters back to the input stream. */
 #define yyless(n) \
@@ -501,6 +520,12 @@ static yyconst flex_int16_t yy_chk[178] =
        77,   77,   77,   77,   77,   77,   77
     } ;
 
+/* Table of booleans, true if rule could match eol. */
+static yyconst flex_int32_t yy_rule_can_match_eol[36] =
+    {   0,
+0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,     };
+
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
 
@@ -520,10 +545,14 @@ char *yytext;
 	#include "common.h"
 	#include "syntax_tree.h"
 	#include "syntax.tab.h"
-	//token is an enum type
-	//extern YYSTYPE yylval;
+	int yycolumn = 1;
+#define YY_USER_ACTION \
+	yylloc.first_line = yylloc.last_line = yylineno; \
+	yylloc.first_column = yycolumn; \
+	yylloc.last_column = yycolumn + yyleng - 1; \
+	yycolumn += yyleng;
 	int errorState = false;
-	void procToken(int token, char *symbol){
+		void procToken(int token, char *symbol){
 		TreeNode *p = createTreeNode(0);
 		strcpy(p->symbol, symbol);
 		strcpy(p->text, yytext);
@@ -544,7 +573,7 @@ char *yytext;
 		}
 		yylval = p;
 	}
-#line 548 "lex.yy.c"
+#line 577 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -758,9 +787,9 @@ YY_DECL
 		}
 
 	{
-#line 71 "lexical.l"
+#line 76 "lexical.l"
 
-#line 764 "lex.yy.c"
+#line 793 "lex.yy.c"
 
 	while ( 1 )		/* loops until end-of-file is reached */
 		{
@@ -806,6 +835,16 @@ yy_find_action:
 
 		YY_DO_BEFORE_ACTION;
 
+		if ( yy_act != YY_END_OF_BUFFER && yy_rule_can_match_eol[yy_act] )
+			{
+			yy_size_t yyl;
+			for ( yyl = 0; yyl < yyleng; ++yyl )
+				if ( yytext[yyl] == '\n' )
+					   
+    yylineno++;
+;
+			}
+
 do_action:	/* This label is used only to access EOF actions. */
 
 		switch ( yy_act )
@@ -819,181 +858,181 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 72 "lexical.l"
+#line 77 "lexical.l"
 {;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 73 "lexical.l"
+#line 78 "lexical.l"
 {;}
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 74 "lexical.l"
-{;}
+#line 79 "lexical.l"
+{yycolumn = 1;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 76 "lexical.l"
+#line 81 "lexical.l"
 {procToken(TYPE, "TYPE"); return TYPE;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 78 "lexical.l"
+#line 83 "lexical.l"
 {procToken(STRUCT, "STRUCT"); return STRUCT;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 79 "lexical.l"
+#line 84 "lexical.l"
 {procToken(RETURN, "RETURN"); return RETURN;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 80 "lexical.l"
+#line 85 "lexical.l"
 {procToken(IF, "IF"); return IF;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 81 "lexical.l"
+#line 86 "lexical.l"
 {procToken(ELSE, "ELSE"); return ELSE;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 82 "lexical.l"
+#line 87 "lexical.l"
 {procToken(WHILE, "WHILE"); return WHILE;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 84 "lexical.l"
+#line 89 "lexical.l"
 {procToken(INT, "INT"); return INT;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 85 "lexical.l"
+#line 90 "lexical.l"
 {procToken(INT_OCT, "INT_OPT"); return INT;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 86 "lexical.l"
+#line 91 "lexical.l"
 {procToken(INT_HEX, "INT_HEX"); return INT;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 87 "lexical.l"
+#line 92 "lexical.l"
 {procToken(FLOAT, "FLOAT"); return FLOAT;} 
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 88 "lexical.l"
+#line 93 "lexical.l"
 {procToken(SCI, "SCI"); return FLOAT;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 89 "lexical.l"
+#line 94 "lexical.l"
 {procToken(ID, "ID"); return ID;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 91 "lexical.l"
+#line 96 "lexical.l"
 {procToken(SEMI, "SEMI"); return SEMI;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 92 "lexical.l"
+#line 97 "lexical.l"
 {procToken(COMMA, "COMMA"); return COMMA;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 93 "lexical.l"
+#line 98 "lexical.l"
 {procToken(ASSIGNOP, "ASSIGNOP"); return ASSIGNOP;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 94 "lexical.l"
+#line 99 "lexical.l"
 {procToken(RELOP, "RELOP"); return RELOP;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 95 "lexical.l"
+#line 100 "lexical.l"
 {procToken(PLUS, "PLUS"); return PLUS;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 96 "lexical.l"
+#line 101 "lexical.l"
 {procToken(MINUS, "MINUS"); return MINUS;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 97 "lexical.l"
+#line 102 "lexical.l"
 {procToken(STAR, "STAR"); return STAR;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 98 "lexical.l"
+#line 103 "lexical.l"
 {procToken(DIV, "DIV"); return DIV;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 99 "lexical.l"
+#line 104 "lexical.l"
 {procToken(AND, "AND"); return AND;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 100 "lexical.l"
+#line 105 "lexical.l"
 {procToken(OR, "OR"); return OR;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 101 "lexical.l"
+#line 106 "lexical.l"
 {procToken(DOT, "DOT"); return DOT;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 102 "lexical.l"
+#line 107 "lexical.l"
 {procToken(NOT, "NOT"); return NOT;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 104 "lexical.l"
+#line 109 "lexical.l"
 {procToken(LP, "LP"); return LP;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 105 "lexical.l"
+#line 110 "lexical.l"
 {procToken(RP, "RP"); return RP;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 106 "lexical.l"
+#line 111 "lexical.l"
 {procToken(LB, "LB"); return LB;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 107 "lexical.l"
+#line 112 "lexical.l"
 {procToken(RB, "RB"); return RB;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 108 "lexical.l"
+#line 113 "lexical.l"
 {procToken(LC, "LC"); return LC;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 109 "lexical.l"
+#line 114 "lexical.l"
 {procToken(RC, "RC"); return RC;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 111 "lexical.l"
+#line 116 "lexical.l"
 {printf("Error type A at line %d: Mysterious character \'%s\'. [lexical error] \n", yylineno, yytext);}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 112 "lexical.l"
+#line 117 "lexical.l"
 ECHO;
 	YY_BREAK
-#line 997 "lex.yy.c"
+#line 1036 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1355,6 +1394,10 @@ static int yy_get_next_buffer (void)
 
 	*--yy_cp = (char) c;
 
+    if ( c == '\n' ){
+        --yylineno;
+    }
+
 	(yytext_ptr) = yy_bp;
 	(yy_hold_char) = *yy_cp;
 	(yy_c_buf_p) = yy_cp;
@@ -1429,6 +1472,11 @@ static int yy_get_next_buffer (void)
 	c = *(unsigned char *) (yy_c_buf_p);	/* cast for 8-bit char's */
 	*(yy_c_buf_p) = '\0';	/* preserve yytext */
 	(yy_hold_char) = *++(yy_c_buf_p);
+
+	if ( c == '\n' )
+		   
+    yylineno++;
+;
 
 	return c;
 }
@@ -1896,6 +1944,9 @@ static int yy_init_globals (void)
      * This function is called from yylex_destroy(), so don't allocate here.
      */
 
+    /* We do not touch yylineno unless the option is enabled. */
+    yylineno =  1;
+    
     (yy_buffer_stack) = 0;
     (yy_buffer_stack_top) = 0;
     (yy_buffer_stack_max) = 0;
@@ -1988,7 +2039,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 111 "lexical.l"
+#line 116 "lexical.l"
 
 
 

@@ -9,14 +9,10 @@
 		return p;
 	}
 
-	void yyerror(const char *msg){
-		printf("Error type B at Line %d: %s. [syntax error]\n", yylineno, msg);
-		errorState = true;
-	}
 %}
 /*Declared tokens*/
 /*%token TYPE*/
-
+%locations
 %right ASSIGNOP
 %left OR
 %left AND
@@ -105,4 +101,9 @@ Args : Exp COMMA Args {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "Args");
 	;
 %%
 #include "lex.yy.c"
-#include "syntax_tree.h"
+//#include "syntax_tree.h"
+	void yyerror(const char *msg){
+		printf("Error type B at Line %d: %s. [syntax error]\n", yylloc.first_line, msg);
+		errorState = true;
+	}
+
