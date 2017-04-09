@@ -44,7 +44,13 @@ ExtDef : Specifier ExtDecList SEMI {$$ = procTreeNode(createTreeNode(3, $1, $2, 
 	| Specifier SEMI {$$ = procTreeNode(createTreeNode(2, $1, $2), "ExtDef");}
 	| Specifier FunDec CompSt {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "ExtDef");};
 ExtDecList : VarDec COMMA ExtDecList {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "ExtDecList");} 
-	| VarDec {$$ = procTreeNode(createTreeNode(1, $1), "ExtDecList");};
+	| VarDec {$$ = procTreeNode(createTreeNode(1, $1), "ExtDecList");}
+	| error SEMI{
+		yyerrok;
+		errorState = true;
+		$$ = procTreeNode(createTreeNode(0), "Stmt");
+	}
+	;
 
 /*Specifiers*/
 Specifier : TYPE {$$ = procTreeNode(createTreeNode(1, $1), "Specifier");}
