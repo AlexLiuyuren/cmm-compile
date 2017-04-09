@@ -26,4 +26,4 @@ test:
 #syntax.tab.h : 
 .PHONY: clean
 clean : 
-	-rm syntax.tab.h syntax.tab.c
+	-rm syntax.tab.h syntax.tab.c lex.yy.c ../parser 
