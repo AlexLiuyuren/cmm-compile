@@ -1,13 +1,14 @@
-#include <stdio.h>
+#include "common.h"
 #include "syntax_tree.h"
 
 TreeNode *createTreeNode(int arity, ...){
 	assert(arity <= kMaxChildren); 
-	TreeNode *p = (TreeNode *)malloc(sizeof(TreeNode));i
+	TreeNode *p = (TreeNode *)malloc(sizeof(TreeNode));
 	p->arity = arity;
 	va_list arg_ptr;
 	va_start(arg_ptr, arity);
-	for (int i = 0; i < p->arity; i ++){
+	int i;
+	for (i = 0; i < p->arity; i ++){
 		TreeNode *temp = va_arg(arg_ptr, TreeNode *);
 		if (temp){
 			p->children[i] = temp;
@@ -40,7 +41,8 @@ void printTree(TreeNode *p, int depth){
 		}	
 	}else{
 		printf(" (%d)\n", p->lineno);
-		for (int i = 0; i < p->arity; i++){
+		int i;
+		for (i = 0; i < p->arity; i++){
 			printTree(p->children[i], depth + 1);
 		}
 	}
@@ -48,7 +50,8 @@ void printTree(TreeNode *p, int depth){
 }
 
 void deleteTreeNode(TreeNode *p){
-	for (int i = 0; i < p->arity; i++){
+	int i;
+	for (i = 0; i < p->arity; i++){
 		deleteTreeNode(p->children[i]);
 	}
 	free(p);

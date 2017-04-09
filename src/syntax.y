@@ -1,7 +1,7 @@
 %{
-	#include <stdio.h>
-	#include <string.h>
+	#include "common.h"
 	#include "syntax_tree.h"
+	#define YYSTYPE TreeNode *
 	extern int yylineno;
 	TreeNode *procTreeNode(TreeNode *p, char *symbol){
 		strcpy(p->symbol, symbol);
@@ -35,12 +35,12 @@
 /* High level Definition*/
 Program : ExtDefList {$$ = procTreeNode(createTreeNode(1, $1), "Program");};
 ExtDefList : ExtDef ExtDefList {$$ = procTreeNode(createTreeNode(2, $1, $2), "ExtDefList");} 
-	| /*empty*/ {$$ = NULL}; 
+	| /*empty*/ {$$ = NULL;}; 
 ExtDef : Specifier ExtDecList SEMI {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "ExtDef");}
 	| Specifier SEMI {$$ = procTreeNode(createTreeNode(2, $1, $2), "ExtDef");}
 	| Specifier FunDec CompSt {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "ExtDef");};
 ExtDecList : VarDec COMMA ExtDecList {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "ExtDecList");} 
-	| VarDec {$$ = procTreeNode(createTreeNode(1, $1), "ExtDecList")};
+	| VarDec {$$ = procTreeNode(createTreeNode(1, $1), "ExtDecList");};
 
 /*Specifiers*/
 Specifier : TYPE {$$ = procTreeNode(createTreeNode(1, $1), "Specifier");}
@@ -48,13 +48,14 @@ Specifier : TYPE {$$ = procTreeNode(createTreeNode(1, $1), "Specifier");}
 StructSpecifier : STRUCT OptTag LC DefList RC {$$ = procTreeNode(createTreeNode(5, $1, $2, $3, $4, $5), "StructSpecifier");}
 	| STRUCT Tag {$$ = procTreeNode(createTreeNode(2, $1, $2), "StructSpecifier");}; 
 OptTag : ID {$$ = procTreeNode(createTreeNode(1, $1), "OptTag");}
-	| /*empty*/ {$$ = NULL};
+	| /*empty*/ {$$ = NULL;};
 Tag : ID {$$ = procTreeNode(createTreeNode(1, $1), "Tag");}; 
 
 /*Declarators*/
 VarDec : ID {$$ = procTreeNode(createTreeNode(1, $1), "VarDec");}
 	| VarDec LB INT RB {$$ = procTreeNode(createTreeNode(4, $1, $2, $3, $4), "VarDec");};
-FunDec : ID LP VarList RP {$$ = procTreeNode(createTreeNode(4, $1, $2, $3, $4), "FunDec");};
+FunDec : ID LP VarList RP {$$ = procTreeNode(createTreeNode(4, $1, $2, $3, $4), "FunDec");}
+	| ID LP RP {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "FunDec");};
 VarList : ParamDec {$$ = procTreeNode(createTreeNode(1, $1), "VarList");}
 	| ParamDec COMMA VarList {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "VarList");};
 ParamDec : Specifier VarDec {$$ = procTreeNode(createTreeNode(2, $1, $2), "ParamDec");};
@@ -62,7 +63,7 @@ ParamDec : Specifier VarDec {$$ = procTreeNode(createTreeNode(2, $1, $2), "Param
 /*Statements*/
 CompSt : LC DefList StmtList RC{$$ = procTreeNode(createTreeNode(4, $1, $2, $3, $4), "CompSt");};
 StmtList : Stmt StmtList {$$ = procTreeNode(createTreeNode(2, $1, $2), "StmtList");}
-	| /*empty*/ {$$ = NULL};
+	| /*empty*/ {$$ = NULL;};
 Stmt : Exp SEMI {$$ = procTreeNode(createTreeNode(2, $1, $2), "Stmt");}
 	| CompSt {$$ = procTreeNode(createTreeNode(1, $1), "Stmt");}
 	| RETURN Exp SEMI {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "Stmt");}
@@ -72,8 +73,8 @@ Stmt : Exp SEMI {$$ = procTreeNode(createTreeNode(2, $1, $2), "Stmt");}
 
 /*Local Definition*/
 DefList : Def DefList {$$ = procTreeNode(createTreeNode(2, $1, $2), "DefList");}
-	| /*empty*/ {$$ = NULL};
-Def : Specifier DecList SEMI {$$ = procTreeNode(createTreeNode(3, $1, $2$3), "Def");};
+	| /*empty*/ {$$ = NULL;};
+Def : Specifier DecList SEMI {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "Def");};
 DecList : Dec {$$ = procTreeNode(createTreeNode(1, $1), "DecList");} 
 	| Dec COMMA DecList{$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "DecList" );};
 Dec : VarDec {$$ = procTreeNode(createTreeNode(1, $1), "Dec");}
@@ -92,7 +93,7 @@ Exp : Exp ASSIGNOP Exp {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "Exp");
 	| MINUS Exp {$$ = procTreeNode(createTreeNode(2, $1, $2), "Exp");}
 	| NOT Exp {$$ = procTreeNode(createTreeNode(2, $1, $2), "Exp");}
 	| ID LP Args RP {$$ = procTreeNode(createTreeNode(4, $1, $2, $3, $4), "Exp");}
-	| ID LP RP {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "Exp")}
+	| ID LP RP {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "Exp");}
 	| Exp LB Exp RB {$$ = procTreeNode(createTreeNode(4, $1, $2, $3, $4), "Exp");}
 	| Exp DOT ID {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "Exp");}
 	| INT {$$ = procTreeNode(createTreeNode(1, $1), "Exp");}
@@ -104,5 +105,4 @@ Args : Exp COMMA Args {$$ = procTreeNode(createTreeNode(3, $1, $2, $3), "Args");
 	;
 %%
 #include "lex.yy.c"
-
-
+#include "syntax_tree.h"

@@ -16,7 +16,7 @@ typedef struct TreeNode{
 
 }TreeNode;
 
-TreeNode *createTreeNode();
-void printTree(TreeNode *p);
+TreeNode *createTreeNode(int arity, ...);
+void printTree(TreeNode *p, int depth);
 void deleteTreeNode(TreeNode *p);
 #endif

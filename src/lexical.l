@@ -1,11 +1,12 @@
 %{
-	#include <stdlib.h>
+	#include "common.h"
 	#include "syntax_tree.h"
 	#include "syntax.tab.h"
 	//token is an enum type
 	//extern YYSTYPE yylval;
+	int errorState = false;
 	void procToken(int token, char *symbol){
-		TreeNode *p = createTreeNode();
+		TreeNode *p = createTreeNode(0);
 		strcpy(p->symbol, symbol);
 		strcpy(p->text, yytext);
 		p->lineno = yylineno;
@@ -85,7 +86,7 @@ WHILE while
 {INT_HEX} {procToken(INT_HEX, "INT_HEX"); return INT;}
 {FLOAT} {procToken(FLOAT, "FLOAT"); return FLOAT;} 
 {SCI} {procToken(SCI, "SCI"); return FLOAT;}
-{ID} {procToken(ID, "ID"); return ID:}
+{ID} {procToken(ID, "ID"); return ID;}
 
 {SEMI} {procToken(SEMI, "SEMI"); return SEMI;}
 {COMMA} {procToken(COMMA, "COMMA"); return COMMA;}
