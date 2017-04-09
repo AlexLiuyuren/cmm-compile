@@ -552,7 +552,7 @@ char *yytext;
 	yylloc.last_column = yycolumn + yyleng - 1; \
 	yycolumn += yyleng;
 	int errorState = false;
-		void procToken(int token, char *symbol){
+		void procToken(char *symbol){
 		TreeNode *p = createTreeNode(0);
 		strcpy(p->symbol, symbol);
 		strcpy(p->text, yytext);
@@ -875,152 +875,152 @@ YY_RULE_SETUP
 case 4:
 YY_RULE_SETUP
 #line 81 "lexical.l"
-{procToken(TYPE, "TYPE"); return TYPE;}
+{procToken("TYPE"); return TYPE;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 83 "lexical.l"
-{procToken(STRUCT, "STRUCT"); return STRUCT;}
+{procToken("STRUCT"); return STRUCT;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 84 "lexical.l"
-{procToken(RETURN, "RETURN"); return RETURN;}
+{procToken("RETURN"); return RETURN;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 85 "lexical.l"
-{procToken(IF, "IF"); return IF;}
+{procToken("IF"); return IF;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 86 "lexical.l"
-{procToken(ELSE, "ELSE"); return ELSE;}
+{procToken("ELSE"); return ELSE;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 87 "lexical.l"
-{procToken(WHILE, "WHILE"); return WHILE;}
+{procToken("WHILE"); return WHILE;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 89 "lexical.l"
-{procToken(INT, "INT"); return INT;}
+{procToken("INT"); return INT;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 90 "lexical.l"
-{procToken(INT_OCT, "INT_OCT"); return INT;}
+{procToken("INT_OCT"); return INT;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 91 "lexical.l"
-{procToken(INT_HEX, "INT_HEX"); return INT;}
+{procToken("INT_HEX"); return INT;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 92 "lexical.l"
-{procToken(FLOAT, "FLOAT"); return FLOAT;} 
+{procToken("FLOAT"); return FLOAT;} 
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 93 "lexical.l"
-{procToken(SCI, "SCI"); return FLOAT;}
+{procToken("SCI"); return FLOAT;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 94 "lexical.l"
-{procToken(ID, "ID"); return ID;}
+{procToken("ID"); return ID;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 96 "lexical.l"
-{procToken(SEMI, "SEMI"); return SEMI;}
+{procToken("SEMI"); return SEMI;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 97 "lexical.l"
-{procToken(COMMA, "COMMA"); return COMMA;}
+{procToken("COMMA"); return COMMA;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 98 "lexical.l"
-{procToken(ASSIGNOP, "ASSIGNOP"); return ASSIGNOP;}
+{procToken("ASSIGNOP"); return ASSIGNOP;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 99 "lexical.l"
-{procToken(RELOP, "RELOP"); return RELOP;}
+{procToken("RELOP"); return RELOP;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 100 "lexical.l"
-{procToken(PLUS, "PLUS"); return PLUS;}
+{procToken("PLUS"); return PLUS;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 101 "lexical.l"
-{procToken(MINUS, "MINUS"); return MINUS;}
+{procToken("MINUS"); return MINUS;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 102 "lexical.l"
-{procToken(STAR, "STAR"); return STAR;}
+{procToken("STAR"); return STAR;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 103 "lexical.l"
-{procToken(DIV, "DIV"); return DIV;}
+{procToken("DIV"); return DIV;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 104 "lexical.l"
-{procToken(AND, "AND"); return AND;}
+{procToken("AND"); return AND;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 105 "lexical.l"
-{procToken(OR, "OR"); return OR;}
+{procToken("OR"); return OR;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 106 "lexical.l"
-{procToken(DOT, "DOT"); return DOT;}
+{procToken("DOT"); return DOT;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 107 "lexical.l"
-{procToken(NOT, "NOT"); return NOT;}
+{procToken("NOT"); return NOT;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 109 "lexical.l"
-{procToken(LP, "LP"); return LP;}
+{procToken("LP"); return LP;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 110 "lexical.l"
-{procToken(RP, "RP"); return RP;}
+{procToken("RP"); return RP;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 111 "lexical.l"
-{procToken(LB, "LB"); return LB;}
+{procToken("LB"); return LB;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
 #line 112 "lexical.l"
-{procToken(RB, "RB"); return RB;}
+{procToken("RB"); return RB;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 113 "lexical.l"
-{procToken(LC, "LC"); return LC;}
+{procToken("LC"); return LC;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 114 "lexical.l"
-{procToken(RC, "RC"); return RC;}
+{procToken("RC"); return RC;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP

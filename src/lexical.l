@@ -9,7 +9,7 @@
 	yylloc.last_column = yycolumn + yyleng - 1; \
 	yycolumn += yyleng;
 	int errorState = false;
-		void procToken(int token, char *symbol){
+		void procToken(char *symbol){
 		TreeNode *p = createTreeNode(0);
 		strcpy(p->symbol, symbol);
 		strcpy(p->text, yytext);
@@ -78,40 +78,40 @@ WHILE while
 {SPACE} {;}
 {ENTER} {yycolumn = 1;}
 
-{TYPE} {procToken(TYPE, "TYPE"); return TYPE;}
+{TYPE} {procToken("TYPE"); return TYPE;}
 
-{STRUCT} {procToken(STRUCT, "STRUCT"); return STRUCT;}
-{RETURN} {procToken(RETURN, "RETURN"); return RETURN;}
-{IF} {procToken(IF, "IF"); return IF;}
-{ELSE} {procToken(ELSE, "ELSE"); return ELSE;}
-{WHILE} {procToken(WHILE, "WHILE"); return WHILE;}
+{STRUCT} {procToken("STRUCT"); return STRUCT;}
+{RETURN} {procToken("RETURN"); return RETURN;}
+{IF} {procToken("IF"); return IF;}
+{ELSE} {procToken("ELSE"); return ELSE;}
+{WHILE} {procToken("WHILE"); return WHILE;}
 
-{INT} {procToken(INT, "INT"); return INT;}
-{INT_OCT} {procToken(INT_OCT, "INT_OCT"); return INT;}
-{INT_HEX} {procToken(INT_HEX, "INT_HEX"); return INT;}
-{FLOAT} {procToken(FLOAT, "FLOAT"); return FLOAT;} 
-{SCI} {procToken(SCI, "SCI"); return FLOAT;}
-{ID} {procToken(ID, "ID"); return ID;}
+{INT} {procToken("INT"); return INT;}
+{INT_OCT} {procToken("INT_OCT"); return INT;}
+{INT_HEX} {procToken("INT_HEX"); return INT;}
+{FLOAT} {procToken("FLOAT"); return FLOAT;} 
+{SCI} {procToken("SCI"); return FLOAT;}
+{ID} {procToken("ID"); return ID;}
 
-{SEMI} {procToken(SEMI, "SEMI"); return SEMI;}
-{COMMA} {procToken(COMMA, "COMMA"); return COMMA;}
-{ASSIGNOP} {procToken(ASSIGNOP, "ASSIGNOP"); return ASSIGNOP;}
-{RELOP} {procToken(RELOP, "RELOP"); return RELOP;}
-{PLUS} {procToken(PLUS, "PLUS"); return PLUS;}
-{MINUS} {procToken(MINUS, "MINUS"); return MINUS;}
-{STAR} {procToken(STAR, "STAR"); return STAR;}
-{DIV} {procToken(DIV, "DIV"); return DIV;}
-{AND} {procToken(AND, "AND"); return AND;}
-{OR} {procToken(OR, "OR"); return OR;}
-{DOT} {procToken(DOT, "DOT"); return DOT;}
-{NOT} {procToken(NOT, "NOT"); return NOT;}
+{SEMI} {procToken("SEMI"); return SEMI;}
+{COMMA} {procToken("COMMA"); return COMMA;}
+{ASSIGNOP} {procToken("ASSIGNOP"); return ASSIGNOP;}
+{RELOP} {procToken("RELOP"); return RELOP;}
+{PLUS} {procToken("PLUS"); return PLUS;}
+{MINUS} {procToken("MINUS"); return MINUS;}
+{STAR} {procToken("STAR"); return STAR;}
+{DIV} {procToken("DIV"); return DIV;}
+{AND} {procToken("AND"); return AND;}
+{OR} {procToken("OR"); return OR;}
+{DOT} {procToken("DOT"); return DOT;}
+{NOT} {procToken("NOT"); return NOT;}
 
-{LP} {procToken(LP, "LP"); return LP;}
-{RP} {procToken(RP, "RP"); return RP;}
-{LB} {procToken(LB, "LB"); return LB;}
-{RB} {procToken(RB, "RB"); return RB;}
-{LC} {procToken(LC, "LC"); return LC;}
-{RC} {procToken(RC, "RC"); return RC;}
+{LP} {procToken("LP"); return LP;}
+{RP} {procToken("RP"); return RP;}
+{LB} {procToken("LB"); return LB;}
+{RB} {procToken("RB"); return RB;}
+{LC} {procToken("LC"); return LC;}
+{RC} {procToken("RC"); return RC;}
 
 . {
 	errorState = true;	
