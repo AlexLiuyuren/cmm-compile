@@ -34,4 +34,10 @@ typedef struct SymbolNode{
 	};
 	struct SymbolNode *stackNext, *hashNext;
 } SymbolNode;
+
+typedef struct SymbolStackNode{
+	SymbolStackNode *symbolStackHead;
+	SymbolStackNode *funcptr;
+	SymbolStackNode *next;
+} SymbolStackNode;
 #endif
