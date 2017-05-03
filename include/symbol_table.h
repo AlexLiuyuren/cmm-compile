@@ -1,6 +1,6 @@
 #ifndef SYMBOL_TABLE_H_
 #define SYMBOL_TABLE_H_
-
+#include "common.h"
 #define kHashSize 0x3fff
 
 typedef struct Type{
@@ -12,5 +12,26 @@ typedef struct Type{
 	};
 } Type;
 
+typedef struct StructContent{
+	char name[kMaxLen];
+	Type *type;
+	struct StructContent *next;
+} StructContent;
 
+typedef struct SymbolNode{
+	char name[kMaxLen];
+	int lineno;
+	// either isfunc is true or isdef is true
+	int isfunc;
+	int isdef;
+	union{
+		struct{
+			Type returnValue;
+			int argumentNum;
+			Type *argumentType;
+		}funcInfo;
+		Type *defInfo; //symbol is basic/array/struct
+	};
+	struct SymbolNode *stackNext, *hashNext;
+} SymbolNode;
 #endif
