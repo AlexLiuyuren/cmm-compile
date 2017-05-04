@@ -47,6 +47,8 @@ void buildExtDef(TreeNode *p);
 void buildDef(TreeNode *p);
 void buildStmt(TreeNode *p);
 void buildExp(TreeNode *p);
+Type buildSpecifier(TreeNode *p);
+void freeType(Type *p);
 void pushSymbolStack();
 void popSymbolStack();
 #endif
