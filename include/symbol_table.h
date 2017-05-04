@@ -36,7 +36,7 @@ typedef struct SymbolNode{
 } SymbolNode;
 
 typedef struct SymbolStackNode{
-	SymbolStackNode *symbolStackHead;
+	SymbolStackNode *symbolHead;
 	SymbolStackNode *funcptr;
 	SymbolStackNode *next;
 } SymbolStackNode;
