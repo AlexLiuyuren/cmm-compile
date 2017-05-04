@@ -40,4 +40,7 @@ typedef struct SymbolStackNode{
 	SymbolStackNode *funcptr;
 	SymbolStackNode *next;
 } SymbolStackNode;
+
+void symbolTableMain(TreeNode *p);
+void buildSymbolTable(TreeNode *p);
 #endif
