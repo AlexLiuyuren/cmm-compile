@@ -43,4 +43,10 @@ typedef struct SymbolStackNode{
 
 void symbolTableMain(TreeNode *p);
 void buildSymbolTable(TreeNode *p);
+void buildExtDef(TreeNode *p);
+void buildDef(TreeNode *p);
+void buildStmt(TreeNode *p);
+void buildExp(TreeNode *p);
+void pushSymbolStack();
+void popSymbolStack();
 #endif
