@@ -4,6 +4,8 @@
 
 //kSymbolHashTable use openhashing
 SymbolNode *kSymbolHashTable[kHashSize];
+//kSymbolStackHead is a linklist
+//It's aimed to allow nested scope
 SymbolStackNode *kSymbolStackHead = NULL;
 //structTable is a linklist
 SymbolNode *kStructTableHead = NULL;
@@ -365,15 +367,13 @@ Type buildExp(TreeNode *p){
 	return return_val;
 }
 
-Type buildSpecifier(TreeNode *p)
-{
+Type buildSpecifier(TreeNode *p){
 	Type node_type;
 	if (strcmp(p->children[0]->symbol, "TYPE") == 0) {
 		node_type.type = BASIC;
 		if (strcmp(p->children[0]->text, "int") == 0) node_type.basic = B_INT;
 		else node_type.basic = B_FLOAT;
-	}
-	else if (strcmp(p->children[0]->symbol, "StructSpecifier") == 0) {
+	}else if (strcmp(p->children[0]->symbol, "StructSpecifier") == 0) {
 		TreeNode *struct_temp = p->children[0];
 		if (struct_temp->arity > 3) {
 			if (searchStructTable(struct_temp->children[1]->children[0]->text) != NULL) {
@@ -381,17 +381,17 @@ Type buildSpecifier(TreeNode *p)
 				node_type.type = NOTDEF;
 				return node_type;
 			}
-			SymbolNode *new_nodec = pushStruct(struct_temp->children[1]->children[0]->text);
-			strcpy(new_nodec->name, struct_temp->children[1]->children[0]->text);
-			new_nodec->def_info = (Type *) malloc(sizeof(Type));
-			new_nodec->def_info->type = STRUCT;
+			SymbolNode *new_node = pushStruct(struct_temp->children[1]->children[0]->text);
+			strcpy(new_node->name, struct_temp->children[1]->children[0]->text);
+			new_node->def_info = (Type *) malloc(sizeof(Type));
+			new_node->def_info->type = STRUCT;
 			TreeNode *def_temp = struct_temp->children[3];
 			while (def_temp->arity > 1) {
 				buildStructDef(def_temp->children[0]);
 				def_temp = def_temp->children[1];
 			}
 			buildStructDef(def_temp->children[0]);
-			node_type = *new_nodec->def_info;
+			node_type = *new_node->def_info;
 		}
 		else {
 			SymbolNode *symbol_temp = searchStructTable(struct_temp->children[1]->children[0]->text);

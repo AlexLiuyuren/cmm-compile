@@ -1,1 +1,1 @@
-Error type B at Line 7: syntax error, unexpected TYPE, expecting ID or SEMI. [syntax error]
+Error type 15 at line 4: Redefined field "x".

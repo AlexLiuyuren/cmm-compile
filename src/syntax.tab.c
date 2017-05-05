@@ -1459,7 +1459,7 @@ yyreduce:
     {
 	(yyval) = procTreeNode(createTreeNode(1, (yyvsp[0])), "Program");
 	if (errorState == false){
-		printTree((yyval), 0);
+		//printTree($$, 0);
 		fflush(stdout);
 		symbolTableMain((yyval));
 		//deleteTreeNode($$);

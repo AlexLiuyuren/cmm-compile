@@ -218,9 +218,10 @@ void clearSymbolStack()
 		free(p);
 	}
 	int i;
-	for (i = 0; i < kHashSize; i++)
+	for (i = 0; i < kHashSize; i++){
 		kSymbolHashTable[i] = NULL;
-	 
+	}
+	return;
 }
 
 void clearStructTable()
