@@ -2,18 +2,18 @@
 #include "syntax_tree.h"
 #include "symbol_table.h"
 
-//symbolHashTable use openhashing
-SymbolNode *symbolHashTable[kHashSize];
-SymbolStackNode *symbolStackHead = NULL;
+//kSymbolHashTable use openhashing
+SymbolNode *kSymbolHashTable[kHashSize];
+SymbolStackNode *kSymbolStackHead = NULL;
 //structTable is a linklist
-SymbolNode *structTableHead = NULL;
+SymbolNode *kStructTableHead = NULL;
 
 //main function
 void symbolTableMain(TreeNode *p){
-	symbolStackHead = (SymbolStackNode *)malloc(sizeof(SymbolStackNode));
-	symbolStackHead->symbolStackHead = NULL;
-	symbolStackHead->funcptr = NULL;
-	symbolStackHead->next = NULL;
+	kSymbolStackHead = (SymbolStackNode *)malloc(sizeof(SymbolStackNode));
+	kSymbolStackHead->symbol_head = NULL;
+	kSymbolStackHead->func_ptr = NULL;
+	kSymbolStackHead->next = NULL;
 	buildSymbolTable(p);
 	return;
 }
@@ -48,44 +48,22 @@ void buildSymbolTable(TreeNode *p){
 	return;
 }
 
-void symbolError(char errorType, TreeNode *p){
-	switch(errorType) {
-	case '1': printf("Error type 1 at line %d: Undefined variable \"%s\".\n", p->lineno, p->text); break;
-	case '2': printf("Error type 2 at line %d: Undefined function \"%s\".\n", p->lineno, p->text); break;
-	case '3': printf("Error type 3 at line %d: Redefined variable \"%s\".\n", p->lineno, p->text); break;
-	case '4': printf("Error type 4 at line %d: Redefined function \"%s\".\n", p->lineno, p->text); break;
-	case '5': printf("Error type 5 at line %d: Type mismatched for assignment.\n", p->lineno); break;
-	case '6': printf("Error type 6 at line %d: The left-hand side of an assignment must be a variable.\n", p->lineno); break;
-	case '7': printf("Error type 7 at line %d: Type mismatched for operands.\n", p->lineno); break;
-	case '8': printf("Error type 8 at line %d: Type mismatched for return.\n", p->lineno); break;
-	case '9': printf("Error type 9 at line %d: func is not applicable for arguments", p->lineno); break;
-	case 'a': printf("Error type 10 at line %d: \"%s\" is not an array.\n", p->lineno, p->text); break;
-	case 'b': printf("Error type 11 at line %d: \"%s\" is not a function.\n", p->lineno, p->text); break;
-	case 'c': printf("Error type 12 at line %d: \"%s\" is not an integer.\n", p->lineno, p->text); break;
-	case 'd': printf("Error type 13 at line %d: Illegal use of \".\".\n", p->lineno); break;
-	case 'e': printf("Error type 14 at line %d: Non-existent field \"%s\".\n", p->lineno, p->text); break;
-	case 'f': printf("Error type 15 at line %d: Redefined field \"%s\".\n", p->lineno, p->text); break;
-	case 'g': printf("Error type 16 at line %d: Duplicated name \"%s\".\n", p->lineno, p->text); break;
-	case 'h': printf("Error type 17 at line %d: Undefined structure \"%s\".\n", p->lineno, p->text); break;
-	}
-	return;
-}
 void buildExtDef(TreeNode *p){
 	if (strcmp(p->children[1]->symbol, "ExtDefList") == 0){
-		Type nodetype = buildSpecifier(p->children[0]);
+		Type node_type = buildSpecifier(p->children[0]);
 		TreeNode *temp = p->children[1];
 		while (temp->arity > 1){
-			buildVarDec(nodetype, temp->children[0]);
+			buildVarDec(node_type, temp->children[0]);
 			temp = temp->children[2];
 		}
-		buildVarDec(nodetype, temp->children[0]);
+		buildVarDec(node_type, temp->children[0]);
 	}
 	if (strcmp(p->children[1]->symbol, "SEMI") == 0){ 
 		buildSpecifier(p->children[0]);
 	}
 	if (strcmp(p->children[1]->symbol, "FunDec") == 0){
-		Type nodetype = buildSpecifier(p->children[0]);
-		buildFunDec(nodetype, p->children[1]);
+		Type node_type = buildSpecifier(p->children[0]);
+		buildFunDec(node_type, p->children[1]);
 		int i;
 		for (i = 1; i < p->children[2]->arity; i ++){
 			buildSymbolTable(p->children[2]->children[i]);
@@ -95,73 +73,134 @@ void buildExtDef(TreeNode *p){
 }
 
 //VarDec -> ID | VarDec LB INT RB
-void buildVarDec(Type nodetype, TreeNode *p){
-	if (p->arity == 1){
-		if (searchSymbol(p->children[0]->text) != NULL){
-			
+void buildVarDec(Type node_type, TreeNode *p){
+	if (p->arity == 1) {
+		//redefined variable
+		if (searchSymbol(p->children[0]->text)) {
+			symbolError('3', p->children[0]);
+			return;
 		}
+		SymbolNode *new_node = addSymbol(p->children[0]->text);
+		strcpy(new_node->name, p->children[0]->text);
+		new_node->is_func = false;
+		new_node->is_def = true;
+		new_node->lineno = p->children[0]->lineno;
+		new_node->def_info = (Type *) malloc(sizeof(Type));
+		memcpy(new_node->def_info, &node_type, sizeof(Type));
 	}
-
+	else {
+		TreeNode *temp = p;
+		Type *array_head = (Type *) malloc(sizeof(Type));
+		array_head->type = BASIC;
+		array_head->basic = node_type.basic;
+		while (temp->arity > 1) {
+			Type *array_temp = (Type *) malloc(sizeof(Type));
+			array_temp->type = ARRAY;
+			array_temp->array.size = temp->children[2]->int_value;
+			array_temp->array.element = array_head;
+			array_head = array_temp;
+			temp = temp->children[0];
+		}
+		if (searchSymbol(temp->children[0]->text)) {
+			symbolError('3', temp->children[0]);
+			return;
+		}
+		SymbolNode *new_node = addSymbol(temp->children[0]->text);
+		strcpy(new_node->name, temp->children[0]->text);
+		new_node->is_func = false;
+		new_node->is_def = true;
+		new_node->lineno = p->children[0]->lineno;
+		new_node->def_info = array_head;
+	}
+	return;
 }
 
-void buildFunDec(Type nodetype, TreeNode *p){
-
+// FunDec -> ID LP VarList RP | ID LP RP
+// VarList -> ParamDec COMMA VarList | ParamDec
+// ParamDec -> Specifier VarDec
+void buildFunDec(Type node_type, TreeNode *p){
+	SymbolNode *symbol_temp = searchSymbol(p->children[0]->text);
+	if (symbol_temp != NULL)
+	{
+		symbolError('4', p->children[0]);
+		pushSymbolStack();
+		return;
+	}
+	
+	SymbolNode *new_node = addSymbol(p->children[0]->text);
+	strcpy(new_node->name, p->children[0]->text);
+	new_node->is_func = true;
+	new_node->is_def = false;
+	new_node->lineno = p->children[0]->lineno;
+	new_node->func_info.return_value = node_type;
+	pushSymbolStack();
+	SymbolStackHead->func_ptr = new_node;
+	if (p->arity == 4) {
+		int cnt = 1;
+		TreeNode *temp = p->children[2];
+		while (temp->arity > 1) {
+			cnt++;
+			temp = temp->children[2];
+		}
+		new_node->func_info.argument_num = cnt;
+		new_node->func_info.argument_type = (Type *) malloc(sizeof(Type) * cnt);
+		cnt = 0;
+		temp = p->children[2];
+		while (temp->arity > 1) {
+			Type new_node_type = buildSpecifier(temp->children[0]->children[0]);
+			buildVarDec(new_node_type, temp->children[0]->children[1]);
+			new_node->func_info.argument_type[cnt] = new_node_type;
+			cnt++;
+			temp = temp->children[2];
+		}
+		Type new_node_type = buildSpecifier(temp->children[0]->children[0]);
+		buildVarDec(new_node_type, temp->children[0]->children[1]);
+		new_node->func_info.argument_type[cnt] = new_node_type;
+		cnt++;
+	}
+	else if (p->arity == 3) {
+		new_node->func_info.argument_number = 0;
+		new_node->func_info.argument_type = NULL; 
+	}
+	else {
+		assert(0);
+	}
 }
 void buildDef(TreeNode *p){
-
+	Type node_type = buildSpecifier(p->children[0]);
+	TreeNode *temp = p->children[1];
+	while (temp->arity > 1) {		
+		buildVarDec(node_type, temp->children[0]->children[0]);
+		temp = temp->children[2];
+	}
+	buildVarDec(node_type, temp->children[0]->children[0]);
 }
 
 void buildStmt(TreeNode *p){
-
+	if (strcmp(p->children[0]->symbol, "RETURN") == 0) {
+		SymbolStackNode *func_field = kSymbolStackHead;
+		while (func_field && !func_field->func_ptr) 
+			func_field = func_field->next;
+		if (func_field && typeEqual(func_field->func_ptr->func_info.return_value, buildExp(p->children[1])) == 0)
+			symbolError('8', p);
+	}
+	int i;
+	for (i = 0; i < p->arity; i++)
+		buildSymbolTable(p->children[i]);
 }
 
 void buildExp(TreeNode *p){
-
-}
-
-void freeType(Type *p){
-	if (p->type == BASIC) free(p);
-	if (p->type == ARRAY){
-		Type *temp = p;
-		while(p->type != BASIC){
-			p = p->array.element;
-			free(temp);
-			temp = p;
-		}
-		free(p);
+	if (strcmp(p->children[0]->symbol, "RETURN") == 0) {
+		SymbolStackNode *func_field = kSymbolStackHead;
+		while (func_field && !func_field->func_ptr) 
+			func_field = func_field->next;
+		if (func_field != NULL && typeEqual(func_field->func_ptr->func_info.return_value, buildExp(p->children[1])) == 0)
+			symbolError('8', p);
 	}
-	if (p->type == STRUCT){
-		while(p->structure){
-			 StructContent *temp = p->structure;
-			 p->structure = p->structure->next;
-			 free(temp);
-		}
-		free(p);
-	}
-}
-void pushSymbolStack(){
-	//insert a node in the head of nodelist
-	SymbolStackNode *newStackNode = (SymbolStackNode *)malloc(sizeof(SymbolStackNode));
-	newStackNode->next = symbolStackHead;
-	symbolStackHead = newStackNode;
-	symbolStackhead->funcptr = NULL;
-	symbolStackhead->symbolHead = NULL;
+	int i;
+	for (i = 0; i < p->arity; i++)
+		buildSymbolTable(p->children[i]);
 }
 
-void popSymbolStack(){
-	SymbolStackNode *deleteNode = symbolStackHead;
-	symbolStackHead = symbolStackHead->next;
-	while (deleteNode->symbolHead){
-		SymbolNode *temp = deleteNode->symbolHead;
-		if (temp->isfunc && temp->funcInfo.argumentNum > 0){
-			free(temp->funcInfo.argumentType);
-		}
-		if (!temp->isfunc){
-			freeType(temp->defInfo);
-		}
-		deleteNode->symbolHead = deleteNode->symbolHead->stackNext;
-		free(temp);
-	}
-	free(deleteNode);
-	return;
-}
+
+

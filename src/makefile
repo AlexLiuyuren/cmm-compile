@@ -1,8 +1,8 @@
 CC := gcc
 DIR_INC = ../include
 
-parser: syntax.tab.c main.c syntax_tree.c
-	$(CC) syntax.tab.c main.c syntax_tree.c -lfl -I $(DIR_INC) -o ../parser
+parser: syntax.tab.c main.c syntax_tree.c symbol_table.c symbol_table_toolfunction.c
+	$(CC) syntax.tab.c main.c syntax_tree.c symbol_table.c symbol_table_toolfunction.c -lfl -I $(DIR_INC) -o ../parser
 
 syntax.tab.c: syntax.y lex.yy.c
 	bison -d syntax.y

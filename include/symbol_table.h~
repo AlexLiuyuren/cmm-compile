@@ -48,7 +48,6 @@ void buildDef(TreeNode *p);
 void buildStmt(TreeNode *p);
 void buildExp(TreeNode *p);
 void buildVarDec(Type, TreeNode *);
-void buildFunDec(Type node_tpye, TreeNode *p);
 Type buildSpecifier(TreeNode *p);
 
 SymbolNode * addSymbol(const char *name);
