@@ -33,7 +33,12 @@ test2:
 	./../parser ../test/2.10.cmm>../test_result/2.10.txt
 	./../parser ../test/2.11.cmm>../test_result/2.11.txt
 	./../parser ../test/2.12.cmm>../test_result/2.12.txt
-#scanner : lex.yy.c main.c
+	./../parser ../test/2.13.cmm>../test_result/2.13.txt
+	./../parser ../test/2.14.cmm>../test_result/2.14.txt
+	./../parser ../test/2.15.cmm>../test_result/2.15.txt
+	./../parser ../test/2.16.cmm>../test_result/2.16.txt
+	./../parser ../test/2.17.cmm>../test_result/2.17.txt
+
 #	$(CC) main.c lex.yy.c -lfl -I $(DIR_INC) -o scanner
 #lex.yy.c : lexical.l syntax.tab.h
 #	flex lexical.l

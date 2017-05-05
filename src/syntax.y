@@ -36,7 +36,7 @@ Program : ExtDefList {
 		printTree($$, 0);
 		fflush(stdout);
 		symbolTableMain($$);
-		deleteTreeNode($$);
+		//deleteTreeNode($$);
 		clearSymbolStack();
 		clearStructTable();
 	}

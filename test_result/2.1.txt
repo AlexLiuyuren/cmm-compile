@@ -34,4 +34,5 @@ Program (1)
                 Exp (4)
                   INT: 1
             SEMI
-
+        RC
+Error type 1 at line 4: Undefined variable "j".

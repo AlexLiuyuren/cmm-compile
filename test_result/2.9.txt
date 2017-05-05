@@ -47,4 +47,4 @@ Program (1)
                 RP
               SEMI
           RC
-Function "func(int)" is not applicable for arguments "(int, int)".
+Error type 9 at line 8: Function "func(int)" is not applicable for arguments "(int, int)".

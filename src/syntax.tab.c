@@ -1462,7 +1462,7 @@ yyreduce:
 		printTree((yyval), 0);
 		fflush(stdout);
 		symbolTableMain((yyval));
-		deleteTreeNode((yyval));
+		//deleteTreeNode($$);
 		clearSymbolStack();
 		clearStructTable();
 	}

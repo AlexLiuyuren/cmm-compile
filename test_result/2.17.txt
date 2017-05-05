@@ -12,21 +12,14 @@ Program (1)
         DefList (3)
           Def (3)
             Specifier (3)
-              TYPE: int
+              StructSpecifier (3)
+                STRUCT
+                Tag (3)
+                  ID: Position
             DecList (3)
               Dec (3)
                 VarDec (3)
-                  ID: i
-            SEMI
-        StmtList (4)
-          Stmt (4)
-            Exp (4)
-              Exp (4)
-                ID: i
-              LB
-              Exp (4)
-                INT: 0
-              RB
+                  ID: pos
             SEMI
         RC
-Error type 10 at line 4: "i" is not an array.
+Error type 17 at line 3: Undefined structure "Position".

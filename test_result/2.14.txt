@@ -1,0 +1,64 @@
+Program (1)
+  ExtDefList (1)
+    ExtDef (1)
+      Specifier (1)
+        StructSpecifier (1)
+          STRUCT
+          OptTag (1)
+            ID: Position
+          LC
+          DefList (3)
+            Def (3)
+              Specifier (3)
+                TYPE: float
+              DecList (3)
+                Dec (3)
+                  VarDec (3)
+                    ID: x
+                COMMA
+                DecList (3)
+                  Dec (3)
+                    VarDec (3)
+                      ID: y
+              SEMI
+          RC
+      SEMI
+    ExtDefList (6)
+      ExtDef (6)
+        Specifier (6)
+          TYPE: int
+        FunDec (6)
+          ID: main
+          LP
+          RP
+        CompSt (7)
+          LC
+          DefList (8)
+            Def (8)
+              Specifier (8)
+                StructSpecifier (8)
+                  STRUCT
+                  Tag (8)
+                    ID: Position
+              DecList (8)
+                Dec (8)
+                  VarDec (8)
+                    ID: p
+              SEMI
+          StmtList (9)
+            Stmt (9)
+              IF
+              LP
+              Exp (9)
+                Exp (9)
+                  Exp (9)
+                    ID: p
+                  DOT
+                  ID: n
+                RELOP: ==
+                Exp (9)
+                  FLOAT: 3.700000
+              RP
+              RC
+          RC
+Error type 14 at line 9: Non-existent field "n".

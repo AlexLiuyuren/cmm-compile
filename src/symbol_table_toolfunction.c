@@ -10,6 +10,8 @@ void symbolError(char errorType, TreeNode *p){
 	case '6': printf("Error type 6 at line %d: The left-hand side of an assignment must be a variable.\n", p->lineno); break;
 	case '7': printf("Error type 7 at line %d: Type mismatched for operands.\n", p->lineno); break;
 	case '8': printf("Error type 8 at line %d: Type mismatched for return.\n", p->lineno); break;
+	case '9': printf("Error type 9 at line %d: ", p->lineno);break;
+	case 'a': printf("Error type 10 at line %d: \"%s\" is not an array.", p->lineno, p->text);break;
 	case 'b': printf("Error type 11 at line %d: \"%s\" is not a function.\n", p->lineno, p->text); break;
 	case 'c': printf("Error type 12 at line %d: \"%s\" is not an integer.\n", p->lineno, p->text); break;
 	case 'd': printf("Error type 13 at line %d: Illegal use of \".\".\n", p->lineno); break;
