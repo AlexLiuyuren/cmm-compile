@@ -58,3 +58,5 @@ Program (1)
                   FLOAT: 3.500000
               SEMI
           RC
+Error type 1 at line 8: Undefined variable "y".
+Error type 13 at line 8: Illegal use of ".".

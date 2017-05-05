@@ -476,13 +476,13 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    33,    33,    42,    43,    44,    45,    46,    47,    48,
-      49,    57,    58,    59,    60,    61,    62,    63,    66,    67,
-      68,    69,    70,    71,    72,    75,    76,    82,    83,    84,
-      85,    86,    87,    88,    89,    90,    98,    99,   100,   101,
-     102,   103,   104,   107,   108,   109,   110,   111,   112,   113,
-     114,   115,   116,   117,   118,   119,   120,   121,   122,   123,
-     124,   125,   132,   133
+       0,    33,    33,    44,    45,    46,    47,    48,    49,    50,
+      51,    59,    60,    61,    62,    63,    64,    65,    68,    69,
+      70,    71,    72,    73,    74,    77,    78,    84,    85,    86,
+      87,    88,    89,    90,    91,    92,   100,   101,   102,   103,
+     104,   105,   106,   109,   110,   111,   112,   113,   114,   115,
+     116,   117,   118,   119,   120,   121,   122,   123,   124,   125,
+     126,   127,   134,   135
 };
 #endif
 
@@ -1460,398 +1460,400 @@ yyreduce:
 	(yyval) = procTreeNode(createTreeNode(1, (yyvsp[0])), "Program");
 	if (errorState == false){
 		printTree((yyval), 0);
-		flush(stdout);
-		buildSymbolTable((yyval));
+		fflush(stdout);
+		symbolTableMain((yyval));
 		deleteTreeNode((yyval));
+		clearSymbolStack();
+		clearStructTable();
 	}
 	}
-#line 1469 "syntax.tab.c" /* yacc.c:1646  */
+#line 1471 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 42 "syntax.y" /* yacc.c:1646  */
+#line 44 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(2, (yyvsp[-1]), (yyvsp[0])), "ExtDefList");}
-#line 1475 "syntax.tab.c" /* yacc.c:1646  */
+#line 1477 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 43 "syntax.y" /* yacc.c:1646  */
+#line 45 "syntax.y" /* yacc.c:1646  */
     {(yyval) = NULL;}
-#line 1481 "syntax.tab.c" /* yacc.c:1646  */
+#line 1483 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 44 "syntax.y" /* yacc.c:1646  */
+#line 46 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(3, (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "ExtDef");}
-#line 1487 "syntax.tab.c" /* yacc.c:1646  */
+#line 1489 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 45 "syntax.y" /* yacc.c:1646  */
+#line 47 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(2, (yyvsp[-1]), (yyvsp[0])), "ExtDef");}
-#line 1493 "syntax.tab.c" /* yacc.c:1646  */
+#line 1495 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 46 "syntax.y" /* yacc.c:1646  */
+#line 48 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(3, (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "ExtDef");}
-#line 1499 "syntax.tab.c" /* yacc.c:1646  */
+#line 1501 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 47 "syntax.y" /* yacc.c:1646  */
+#line 49 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(3, (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "ExtDecList");}
-#line 1505 "syntax.tab.c" /* yacc.c:1646  */
+#line 1507 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 48 "syntax.y" /* yacc.c:1646  */
+#line 50 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(1, (yyvsp[0])), "ExtDecList");}
-#line 1511 "syntax.tab.c" /* yacc.c:1646  */
+#line 1513 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 49 "syntax.y" /* yacc.c:1646  */
+#line 51 "syntax.y" /* yacc.c:1646  */
     {
 		yyerrok;
 		errorState = true;
 		(yyval) = procTreeNode(createTreeNode(0), "Stmt");
 	}
-#line 1521 "syntax.tab.c" /* yacc.c:1646  */
+#line 1523 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 57 "syntax.y" /* yacc.c:1646  */
+#line 59 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(1, (yyvsp[0])), "Specifier");}
-#line 1527 "syntax.tab.c" /* yacc.c:1646  */
+#line 1529 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 58 "syntax.y" /* yacc.c:1646  */
+#line 60 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(1, (yyvsp[0])), "Specifier" );}
-#line 1533 "syntax.tab.c" /* yacc.c:1646  */
+#line 1535 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 59 "syntax.y" /* yacc.c:1646  */
+#line 61 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(5, (yyvsp[-4]), (yyvsp[-3]), (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "StructSpecifier");}
-#line 1539 "syntax.tab.c" /* yacc.c:1646  */
+#line 1541 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 60 "syntax.y" /* yacc.c:1646  */
+#line 62 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(2, (yyvsp[-1]), (yyvsp[0])), "StructSpecifier");}
-#line 1545 "syntax.tab.c" /* yacc.c:1646  */
+#line 1547 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 61 "syntax.y" /* yacc.c:1646  */
+#line 63 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(1, (yyvsp[0])), "OptTag");}
-#line 1551 "syntax.tab.c" /* yacc.c:1646  */
+#line 1553 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 62 "syntax.y" /* yacc.c:1646  */
+#line 64 "syntax.y" /* yacc.c:1646  */
     {(yyval) = NULL;}
-#line 1557 "syntax.tab.c" /* yacc.c:1646  */
+#line 1559 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 63 "syntax.y" /* yacc.c:1646  */
+#line 65 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(1, (yyvsp[0])), "Tag");}
-#line 1563 "syntax.tab.c" /* yacc.c:1646  */
+#line 1565 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 66 "syntax.y" /* yacc.c:1646  */
+#line 68 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(1, (yyvsp[0])), "VarDec");}
-#line 1569 "syntax.tab.c" /* yacc.c:1646  */
+#line 1571 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 67 "syntax.y" /* yacc.c:1646  */
+#line 69 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(4, (yyvsp[-3]), (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "VarDec");}
-#line 1575 "syntax.tab.c" /* yacc.c:1646  */
+#line 1577 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 68 "syntax.y" /* yacc.c:1646  */
+#line 70 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(4, (yyvsp[-3]), (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "FunDec");}
-#line 1581 "syntax.tab.c" /* yacc.c:1646  */
+#line 1583 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 69 "syntax.y" /* yacc.c:1646  */
+#line 71 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(3, (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "FunDec");}
-#line 1587 "syntax.tab.c" /* yacc.c:1646  */
+#line 1589 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 70 "syntax.y" /* yacc.c:1646  */
+#line 72 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(1, (yyvsp[0])), "VarList");}
-#line 1593 "syntax.tab.c" /* yacc.c:1646  */
+#line 1595 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 71 "syntax.y" /* yacc.c:1646  */
+#line 73 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(3, (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "VarList");}
-#line 1599 "syntax.tab.c" /* yacc.c:1646  */
+#line 1601 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 72 "syntax.y" /* yacc.c:1646  */
+#line 74 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(2, (yyvsp[-1]), (yyvsp[0])), "ParamDec");}
-#line 1605 "syntax.tab.c" /* yacc.c:1646  */
+#line 1607 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 75 "syntax.y" /* yacc.c:1646  */
+#line 77 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(4, (yyvsp[-3]), (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "CompSt");}
-#line 1611 "syntax.tab.c" /* yacc.c:1646  */
+#line 1613 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 76 "syntax.y" /* yacc.c:1646  */
+#line 78 "syntax.y" /* yacc.c:1646  */
     {
 		yyerrok;
 		errorState = true;
 		(yyval) = procTreeNode(createTreeNode(0), "CompSt");
 	}
-#line 1621 "syntax.tab.c" /* yacc.c:1646  */
+#line 1623 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 82 "syntax.y" /* yacc.c:1646  */
+#line 84 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(2, (yyvsp[-1]), (yyvsp[0])), "StmtList");}
-#line 1627 "syntax.tab.c" /* yacc.c:1646  */
+#line 1629 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 83 "syntax.y" /* yacc.c:1646  */
+#line 85 "syntax.y" /* yacc.c:1646  */
     {(yyval) = NULL;}
-#line 1633 "syntax.tab.c" /* yacc.c:1646  */
+#line 1635 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 84 "syntax.y" /* yacc.c:1646  */
+#line 86 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(2, (yyvsp[-1]), (yyvsp[0])), "Stmt");}
-#line 1639 "syntax.tab.c" /* yacc.c:1646  */
+#line 1641 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 85 "syntax.y" /* yacc.c:1646  */
+#line 87 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(1, (yyvsp[0])), "Stmt");}
-#line 1645 "syntax.tab.c" /* yacc.c:1646  */
+#line 1647 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 86 "syntax.y" /* yacc.c:1646  */
+#line 88 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(3, (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "Stmt");}
-#line 1651 "syntax.tab.c" /* yacc.c:1646  */
+#line 1653 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 87 "syntax.y" /* yacc.c:1646  */
+#line 89 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(5, (yyvsp[-4]), (yyvsp[-3]), (yyvsp[-2]), (yyvsp[-1])), "Stmt");}
-#line 1657 "syntax.tab.c" /* yacc.c:1646  */
+#line 1659 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 88 "syntax.y" /* yacc.c:1646  */
+#line 90 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(7, (yyvsp[-6]), (yyvsp[-5]), (yyvsp[-4]), (yyvsp[-3]), (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "Stmt");}
-#line 1663 "syntax.tab.c" /* yacc.c:1646  */
+#line 1665 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 89 "syntax.y" /* yacc.c:1646  */
+#line 91 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(5, (yyvsp[-4]), (yyvsp[-3]), (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "Stmt");}
-#line 1669 "syntax.tab.c" /* yacc.c:1646  */
+#line 1671 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 90 "syntax.y" /* yacc.c:1646  */
+#line 92 "syntax.y" /* yacc.c:1646  */
     {
 		yyerrok;
 		errorState = true;
 		(yyval) = procTreeNode(createTreeNode(0), "Stmt");
 	}
-#line 1679 "syntax.tab.c" /* yacc.c:1646  */
+#line 1681 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 98 "syntax.y" /* yacc.c:1646  */
+#line 100 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(2, (yyvsp[-1]), (yyvsp[0])), "DefList");}
-#line 1685 "syntax.tab.c" /* yacc.c:1646  */
+#line 1687 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 99 "syntax.y" /* yacc.c:1646  */
+#line 101 "syntax.y" /* yacc.c:1646  */
     {(yyval) = NULL;}
-#line 1691 "syntax.tab.c" /* yacc.c:1646  */
+#line 1693 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 100 "syntax.y" /* yacc.c:1646  */
+#line 102 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(3, (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "Def");}
-#line 1697 "syntax.tab.c" /* yacc.c:1646  */
+#line 1699 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 101 "syntax.y" /* yacc.c:1646  */
+#line 103 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(1, (yyvsp[0])), "DecList");}
-#line 1703 "syntax.tab.c" /* yacc.c:1646  */
+#line 1705 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 102 "syntax.y" /* yacc.c:1646  */
+#line 104 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(3, (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "DecList" );}
-#line 1709 "syntax.tab.c" /* yacc.c:1646  */
+#line 1711 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 103 "syntax.y" /* yacc.c:1646  */
+#line 105 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(1, (yyvsp[0])), "Dec");}
-#line 1715 "syntax.tab.c" /* yacc.c:1646  */
+#line 1717 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 104 "syntax.y" /* yacc.c:1646  */
+#line 106 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(3, (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "Dec");}
-#line 1721 "syntax.tab.c" /* yacc.c:1646  */
+#line 1723 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 107 "syntax.y" /* yacc.c:1646  */
+#line 109 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(3, (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "Exp");}
-#line 1727 "syntax.tab.c" /* yacc.c:1646  */
+#line 1729 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 108 "syntax.y" /* yacc.c:1646  */
+#line 110 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(3, (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "Exp");}
-#line 1733 "syntax.tab.c" /* yacc.c:1646  */
+#line 1735 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 109 "syntax.y" /* yacc.c:1646  */
+#line 111 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(3, (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "Exp");}
-#line 1739 "syntax.tab.c" /* yacc.c:1646  */
+#line 1741 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 110 "syntax.y" /* yacc.c:1646  */
+#line 112 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(3, (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "Exp");}
-#line 1745 "syntax.tab.c" /* yacc.c:1646  */
+#line 1747 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 111 "syntax.y" /* yacc.c:1646  */
+#line 113 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(3, (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "Exp");}
-#line 1751 "syntax.tab.c" /* yacc.c:1646  */
+#line 1753 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 112 "syntax.y" /* yacc.c:1646  */
+#line 114 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(3, (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "Exp");}
-#line 1757 "syntax.tab.c" /* yacc.c:1646  */
+#line 1759 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 113 "syntax.y" /* yacc.c:1646  */
+#line 115 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(3, (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "Exp");}
-#line 1763 "syntax.tab.c" /* yacc.c:1646  */
+#line 1765 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 114 "syntax.y" /* yacc.c:1646  */
+#line 116 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(3, (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "Exp");}
-#line 1769 "syntax.tab.c" /* yacc.c:1646  */
+#line 1771 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 115 "syntax.y" /* yacc.c:1646  */
+#line 117 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(3, (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "Exp");}
-#line 1775 "syntax.tab.c" /* yacc.c:1646  */
+#line 1777 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 116 "syntax.y" /* yacc.c:1646  */
+#line 118 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(2, (yyvsp[-1]), (yyvsp[0])), "Exp");}
-#line 1781 "syntax.tab.c" /* yacc.c:1646  */
+#line 1783 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 117 "syntax.y" /* yacc.c:1646  */
+#line 119 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(2, (yyvsp[-1]), (yyvsp[0])), "Exp");}
-#line 1787 "syntax.tab.c" /* yacc.c:1646  */
+#line 1789 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 118 "syntax.y" /* yacc.c:1646  */
+#line 120 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(4, (yyvsp[-3]), (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "Exp");}
-#line 1793 "syntax.tab.c" /* yacc.c:1646  */
+#line 1795 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 119 "syntax.y" /* yacc.c:1646  */
+#line 121 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(3, (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "Exp");}
-#line 1799 "syntax.tab.c" /* yacc.c:1646  */
+#line 1801 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 120 "syntax.y" /* yacc.c:1646  */
+#line 122 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(4, (yyvsp[-3]), (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "Exp");}
-#line 1805 "syntax.tab.c" /* yacc.c:1646  */
+#line 1807 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 121 "syntax.y" /* yacc.c:1646  */
+#line 123 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(3, (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "Exp");}
-#line 1811 "syntax.tab.c" /* yacc.c:1646  */
+#line 1813 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 122 "syntax.y" /* yacc.c:1646  */
+#line 124 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(1, (yyvsp[0])), "Exp");}
-#line 1817 "syntax.tab.c" /* yacc.c:1646  */
+#line 1819 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 123 "syntax.y" /* yacc.c:1646  */
+#line 125 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(1, (yyvsp[0])), "Exp");}
-#line 1823 "syntax.tab.c" /* yacc.c:1646  */
+#line 1825 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 124 "syntax.y" /* yacc.c:1646  */
+#line 126 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(1, (yyvsp[0])), "Exp");}
-#line 1829 "syntax.tab.c" /* yacc.c:1646  */
+#line 1831 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 125 "syntax.y" /* yacc.c:1646  */
+#line 127 "syntax.y" /* yacc.c:1646  */
     {
 		yyerrok;
 		errorState = true;
 		(yyval) = procTreeNode(createTreeNode(0), "Exp");
 	}
-#line 1839 "syntax.tab.c" /* yacc.c:1646  */
+#line 1841 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 132 "syntax.y" /* yacc.c:1646  */
+#line 134 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(3, (yyvsp[-2]), (yyvsp[-1]), (yyvsp[0])), "Args");}
-#line 1845 "syntax.tab.c" /* yacc.c:1646  */
+#line 1847 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 133 "syntax.y" /* yacc.c:1646  */
+#line 135 "syntax.y" /* yacc.c:1646  */
     {(yyval) = procTreeNode(createTreeNode(1, (yyvsp[0])), "Args");}
-#line 1851 "syntax.tab.c" /* yacc.c:1646  */
+#line 1853 "syntax.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1855 "syntax.tab.c" /* yacc.c:1646  */
+#line 1857 "syntax.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2086,7 +2088,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 135 "syntax.y" /* yacc.c:1906  */
+#line 137 "syntax.y" /* yacc.c:1906  */
 
 #include "lex.yy.c"
 //#include "syntax_tree.h"

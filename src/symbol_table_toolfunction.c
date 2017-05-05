@@ -43,6 +43,18 @@ int typeEqual(Type val1, Type val2)
 	return 1;
 }
 
+//For debugging
+void printType(Type t, char *str)
+{
+	if (t.type == BASIC) {
+		if (t.basic == B_INT) strcpy(str, "int\0");
+		else strcpy(str, "float\0");
+	}
+	else {
+		assert(0);
+	}
+}
+
 void freeType(Type *p){
 	if (p->type == BASIC) free(p);
 	if (p->type == ARRAY){
@@ -69,14 +81,13 @@ unsigned int hash(const char *name)
 	unsigned int val = 0, i;
 	for (; *name; name++) {
 		val = (val << 2) + *name;
-		if (i = val & ~HASH_MASK)
-			val = (val ^ (i >> 12)) & HASH_MASK;
+		if (i = val & ~kHashSize)
+			val = (val ^ (i >> 12)) & kHashSize;
 	}
 	return val;
 }
 
-SymbolNode *searchSymbolTable(const char *name)
-{
+SymbolNode *searchSymbolTable(const char *name){
 	SymbolNode *temp = kSymbolHashTable[hash(name)]; // generate the hash slot
 	for (; temp; temp = temp->hash_next) {
 		if (strcmp(temp->name, name) == 0)
@@ -85,18 +96,16 @@ SymbolNode *searchSymbolTable(const char *name)
 	return NULL;
 }
 
-SymbolNode *searchStructTable(const char *name)
-{
+SymbolNode *searchStructTable(const char *name){
 	SymbolNode *temp = kStructTableHead;
-	for (; temp; temp = temp->StackNext) {
+	for (; temp; temp = temp->stack_next) {
 		if (strcmp(temp->name, name) == 0)
 			return temp;
 	}
 	return NULL;
 }
 
-StructContent *searchStructContent(StructContent *structure, const char *name)
-{
+StructContent *searchStructContent(StructContent *structure, const char *name){
 	StructContent *temp = structure;
 	for (; temp; temp = temp->next) {
 		if (strcmp(temp->name, name) == 0)
@@ -109,7 +118,7 @@ SymbolNode *addSymbol(const char *name)
 {
 	unsigned int hash_num = hash(name);
 	SymbolNode *hash_slot = kSymbolHashTable[hash_num];
-	SymbolNode *stack_slot = kSymbolStackHead->symbol_head;
+	SymbolNode *stack_slot =  kSymbolStackHead->symbol_head;
 	SymbolNode *new_node = (SymbolNode *) malloc(sizeof(SymbolNode));
 	
 	if (hash_slot == NULL) {
@@ -140,24 +149,87 @@ void pushSymbolStack(){
 	SymbolStackNode *newStackNode = (SymbolStackNode *)malloc(sizeof(SymbolStackNode));
 	newStackNode->next = kSymbolStackHead;
 	kSymbolStackHead = newStackNode;
-	kSymbolStackHead->funcptr = NULL;
-	kSymbolStackHead->symbolHead = NULL;
+	kSymbolStackHead->func_ptr = NULL;
+	kSymbolStackHead->symbol_head = NULL;
 }
 
 void popSymbolStack(){
 	SymbolStackNode *deleteNode = kSymbolStackHead;
 	kSymbolStackHead = kSymbolStackHead->next;
-	while (deleteNode->symbolHead){
-		SymbolNode *temp = deleteNode->symbolHead;
-		if (temp->is_func && temp->funcInfo.argumentNum > 0){
-			free(temp->funcInfo.argumentType);
+	while (deleteNode->symbol_head){
+		SymbolNode *temp = deleteNode->symbol_head;
+		if (temp->is_func && temp->func_info.argument_num > 0){
+			free(temp->func_info.argument_type);
 		}
 		if (!temp->is_func){
-			freeType(temp->defInfo);
+			freeType(temp->def_info);
 		}
-		deleteNode->symbolHead = deleteNode->symbolHead->stackNext;
+		deleteNode->symbol_head = deleteNode->symbol_head->stack_next;
 		free(temp);
 	}
 	free(deleteNode);
 	return;
+}
+
+SymbolNode *pushStruct(const char *name)
+{
+	SymbolNode *new_node = (SymbolNode *) malloc(sizeof(SymbolNode));
+	if (kStructTableHead == NULL) {
+		kStructTableHead = new_node;
+		new_node->stack_next = NULL;
+	}
+	else {
+		new_node->stack_next = kStructTableHead;
+		kStructTableHead = new_node;
+	}
+	
+	return new_node;
+}
+
+StructContent *pushStructContent(const char *name)
+{
+	StructContent *new_node = (StructContent *) malloc(sizeof(StructContent));
+	if (kStructTableHead->def_info->structure == NULL) {
+		kStructTableHead->def_info->structure = new_node;
+		new_node->next = NULL;
+	}
+	else {
+		new_node->next = kStructTableHead->def_info->structure;
+		kStructTableHead->def_info->structure = new_node;
+	}
+	return new_node;
+}
+void clearSymbolStack()
+{
+	while (kSymbolStackHead != NULL) {
+		SymbolStackNode *p = kSymbolStackHead;
+		kSymbolStackHead = kSymbolStackHead->next;
+		while (p->symbol_head != NULL) {
+			SymbolNode *temp = p->symbol_head;
+			if (temp->is_func && temp->func_info.argument_num > 0)
+				free(temp->func_info.argument_type);
+			if (!temp->is_func)
+				freeType(temp->def_info);
+			p->symbol_head = p->symbol_head->stack_next;
+			free(temp);
+		}
+		free(p);
+	}
+	int i;
+	for (i = 0; i < kHashSize; i++)
+		kSymbolHashTable[i] = NULL;
+	 
+}
+
+void clearStructTable()
+{
+	while (kStructTableHead != NULL) {
+		SymbolNode *p = kStructTableHead;
+		kStructTableHead = kStructTableHead->stack_next;
+		if (p->is_func && p->func_info.argument_num > 0)
+			free(p->func_info.argument_type);
+		if (!p->is_func)
+			freeType(p->def_info);
+		free(p);
+	}
 }

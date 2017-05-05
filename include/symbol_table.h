@@ -1,10 +1,11 @@
 #ifndef SYMBOL_TABLE_H_
 #define SYMBOL_TABLE_H_
 #include "common.h"
+#include "syntax_tree.h"
 #define kHashSize 0x3fffc
 
 typedef struct Type{
-	enum{BASIC, ARRAY, STRUCT} type;
+	enum{BASIC, ARRAY, STRUCT, OTHER, NOTDEF} type;
 	union{
 		enum{B_INT, B_FLOAT} basic;
 		struct { struct Type *element; int size;} array;
@@ -36,8 +37,8 @@ typedef struct SymbolNode{
 } SymbolNode;
 
 typedef struct SymbolStackNode{
-	struct SymbolStackNode *symbol_head;
-	struct SymbolStackNode *func_ptr;
+	struct SymbolNode *symbol_head;
+	struct SymbolNode *func_ptr;
 	struct SymbolStackNode *next;
 } SymbolStackNode;
 
@@ -46,21 +47,28 @@ void buildSymbolTable(TreeNode *p);
 void buildExtDef(TreeNode *p);
 void buildDef(TreeNode *p);
 void buildStmt(TreeNode *p);
-void buildExp(TreeNode *p);
 void buildVarDec(Type, TreeNode *);
 void buildFunDec(Type node_tpye, TreeNode *p);
+void buildStructDef(TreeNode *p);
+void buildStructVarDec(Type node_type, TreeNode *p);
 Type buildSpecifier(TreeNode *p);
+Type buildExp(TreeNode *p);
 
 SymbolNode * addSymbol(const char *name);
-
+void printType(Type t, char *str);
 void freeType(Type *p);
-void pushSymbolStack();
-void popSymbolStack();
 SymbolNode *searchSymbolTable(const char *name);
 SymbolNode *searchStructTable(const char *name);
 StructContent *searchStructContent(StructContent *structure, const char *name);
+void pushSymbolStack();
+void popSymbolStack();
+StructContent *pushStructContent(const char *name);
+SymbolNode *pushStruct(const char *name);
+void clearSymbolStack();
+void clearStructTable();
 
-extern SymbolNode *kSymbolHashTable[kHashSize];
+
+extern SymbolNode *kSymbolHashTable[];
 extern SymbolStackNode *kSymbolStackHead;
 extern SymbolNode *kStructTableHead;
 

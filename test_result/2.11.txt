@@ -1,0 +1,3 @@
+Error type B at Line 2: syntax error, unexpected LC, expecting SEMI. [syntax error]
+Error type B at Line 4: syntax error, unexpected ID, expecting SEMI. [syntax error]
+Error type B at Line 5: syntax error, unexpected RC, expecting SEMI. [syntax error]
