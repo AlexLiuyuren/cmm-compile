@@ -8,7 +8,7 @@
 	yylloc.first_column = yycolumn; \
 	yylloc.last_column = yycolumn + yyleng - 1; \
 	yycolumn += yyleng;
-	int errorState = false;
+	bool errorState = false;
 		void procToken(char *symbol){
 		TreeNode *p = createTreeNode(0);
 		strcpy(p->symbol, symbol);

@@ -175,10 +175,10 @@ void buildFunDec(Type node_type, TreeNode *p){
 			buildVarDec(new_node_type, temp->children[0]->children[1]);
 			new_node->func_info.argument_type[cnt] = new_node_type;
             //ir
+			irtemp.kind = PARAM;
             symbol_temp = searchSymbolTable(temp->children[0]->children[1]->children[0]->text);
             irtemp.param = generateVar(symbol_temp);
             InterCodeAppend(&InterCodeHead, irtemp);
-
 			cnt++;
 			temp = temp->children[2];
 		}
@@ -391,67 +391,66 @@ Type buildExp(TreeNode *p, Operand place, InterCodeNode *retIr){
 			symbolError('2', p->children[0]);
 		else if (symbol_temp->is_func == false)
 			symbolError('b', p->children[0]);
-        else if (strcmp(p->children[2]->symbol, "RP") == 0) {
-            if (symbol_temp->func_info.argument_num > 0) {
-                symbolError('9', p);
-                printf("Function \"%s(", symbol_temp->name);
-                int i;
-                char str[40];
-                for (i = 0; i < symbol_temp->func_info.argument_num - 1; i++) {
-                    printType(symbol_temp->func_info.argument_type[i], str);
-                    printf("%s, ", str);
-                }
-                printType(symbol_temp->func_info.argument_type[i], str);
-                printf("%s", str);
-                printf(")\" is not applicable for arguments \"().\n");
-                return return_value;
-            }
-            if (strcmp(p->children[0]->text, "read") == 0) {
-                InterCode irtemp;
-                irtemp.kind = READ, irtemp.read = place;
-                InterCodeAppend(retIr, irtemp);
-            }
-            else {
-                InterCode irtemp;
-                irtemp.kind = CALL_FUNC, irtemp.call_func.dest = place;
-                strcpy(irtemp.call_func.func, p->children[0]->text);
-                InterCodeAppend(retIr, irtemp);
-            }
-            return_value = symbol_temp->func_info.return_value;
-        }
-
+        	else if (strcmp(p->children[2]->symbol, "RP") == 0) {
+		    if (symbol_temp->func_info.argument_num > 0) {
+		        symbolError('9', p);
+		        printf("Function \"%s(", symbol_temp->name);
+		        int i;
+		        char str[40];
+		        for (i = 0; i < symbol_temp->func_info.argument_num - 1; i++) {
+		            printType(symbol_temp->func_info.argument_type[i], str);
+		            printf("%s, ", str);
+		        }
+		        printType(symbol_temp->func_info.argument_type[i], str);
+		        printf("%s", str);
+		        printf(")\" is not applicable for arguments \"().\n");
+		        return return_value;
+		    }
+		    if (strcmp(p->children[0]->text, "read") == 0) {
+		        InterCode irtemp;
+		        irtemp.kind = READ, irtemp.read = place;
+		        InterCodeAppend(retIr, irtemp);
+		    }
+		    else {
+		        InterCode irtemp;
+		        irtemp.kind = CALL_FUNC, irtemp.call_func.dest = place;
+		        strcpy(irtemp.call_func.func, p->children[0]->text);
+		        InterCodeAppend(retIr, irtemp);
+		    }
+		    return_value = symbol_temp->func_info.return_value;
+        	}
 		else {
-			int cnt = 1;
-			TreeNode *args_temp = p->children[2];
-			while (args_temp->arity > 1) {
-				cnt++;
-				args_temp = args_temp->children[2];
-			}
-			Type *call = (Type *) malloc(sizeof(Type) * cnt);
-            Operand *arg_list = (Operand *) malloc(sizeof(Operand) * cnt);
-            InterCodeNode icntemp;
-            INITICN(icntemp);
-			cnt = 0;
-			args_temp = p->children[2];
-			while (args_temp->arity > 1) {
-                arg_list[cnt] = generateTemp();
-				call[cnt] = buildExp(args_temp->children[0], arg_list[cnt], &icntemp);
-				cnt++;
-				args_temp = args_temp->children[2];
-			}
-            arg_list[cnt] = generateTemp();
+		    int cnt = 1;
+		    TreeNode *args_temp = p->children[2];
+		    while (args_temp->arity > 1) {
+			cnt++;
+			args_temp = args_temp->children[2];
+		    }
+		    Type *call = (Type *) malloc(sizeof(Type) * cnt);
+		    Operand *arg_list = (Operand *) malloc(sizeof(Operand) * cnt);
+		    InterCodeNode icntemp;
+		    INITICN(icntemp);
+		    cnt = 0;
+		    args_temp = p->children[2];
+		    while (args_temp->arity > 1) {
+                	arg_list[cnt] = generateTemp();
 			call[cnt] = buildExp(args_temp->children[0], arg_list[cnt], &icntemp);
 			cnt++;
-			int flag = true;
-			if (cnt != symbol_temp->func_info.argument_num)
-				flag = false;
-			else {
-				int i;
-				for (i = 0; i < cnt; i++)
-					if (typeEqual(call[cnt], symbol_temp->func_info.argument_type[cnt]) == 0) {
-						flag = false;
-						break;
-					}
+			args_temp = args_temp->children[2];
+		    }
+            	    arg_list[cnt] = generateTemp();
+		    call[cnt] = buildExp(args_temp->children[0], arg_list[cnt], &icntemp);
+		    cnt++;
+		    int flag = true;
+		    if (cnt != symbol_temp->func_info.argument_num)
+			flag = false;
+		    else {
+			int i;
+			for (i = 0; i < cnt; i++)
+				if (typeEqual(call[i], symbol_temp->func_info.argument_type[i]) == 0) {
+					flag = false;
+					break;
+				}
 			}
 			if (!flag) {
 				symbolError('9', p);
@@ -471,31 +470,31 @@ Type buildExp(TreeNode *p, Operand place, InterCodeNode *retIr){
 				}
 				printType(call[i], str);
 				printf("%s)\".\n", str);
-                return return_value;
+                		return return_value;
 			}
             
-            if (STREQ(p->children[0]->text, "write")) {
-                InterCode irtemp;
-                irtemp.kind = WRITE, irtemp.write = arg_list[0];
-                InterCodeAppend(&icntemp, irtemp);
-                InterCodeCat(2, retIr, &icntemp);
-            }
-            else {
-                int i;
-                InterCode irtemp;
-                for (i = 0; i < cnt; i++) {
-                    irtemp.kind = ARG, irtemp.arg = arg_list[i];
-                    InterCodeAppend(&icntemp, irtemp);
-                }
-                irtemp.kind = CALL_FUNC, irtemp.call_func.dest = place;
-                strcpy(irtemp.call_func.func, p->children[0]->text);
-                InterCodeAppend(&icntemp, irtemp);
-                InterCodeCat(2, retIr, &icntemp);
-            }
+		        if (strcmp(p->children[0]->text, "write") == 0) {
+			    InterCode irtemp;
+			    irtemp.kind = WRITE, irtemp.write = arg_list[0];
+			    InterCodeAppend(&icntemp, irtemp);
+			    InterCodeCat(2, retIr, &icntemp);
+		        }
+		        else {
+			    int i;
+			    InterCode irtemp;
+			    for (i = 0; i < cnt; i++) {
+			        irtemp.kind = ARG, irtemp.arg = arg_list[i];
+			        InterCodeAppend(&icntemp, irtemp);
+			    }
+			    irtemp.kind = CALL_FUNC, irtemp.call_func.dest = place;
+			    strcpy(irtemp.call_func.func, p->children[0]->text);
+			    InterCodeAppend(&icntemp, irtemp);
+			    InterCodeCat(2, retIr, &icntemp);
+		    	}
             
-            free(arg_list);
 			free(call);
-            return_value = symbol_temp->func_info.return_value;
+            		free(arg_list);
+            		return_value = symbol_temp->func_info.return_value;
 		}
 		return return_value;
 	}

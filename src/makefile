@@ -38,6 +38,9 @@ test2:
 	./../parser ../test/2.15.cmm>../test_result/2.15.txt
 	./../parser ../test/2.16.cmm>../test_result/2.16.txt
 	./../parser ../test/2.17.cmm>../test_result/2.17.txt
+
+test3:
+	./../parser ../test/3.1.cmm ../test_result/3.1.txt
 #	$(CC) main.c lex.yy.c -lfl -I $(DIR_INC) -o scanner
 #lex.yy.c : lexical.l syntax.tab.h
 #	flex lexical.l

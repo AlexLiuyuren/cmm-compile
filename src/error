@@ -1,6 +1,0 @@
-syntax.y:140:7: warning: conflicting types for ‘yyerror’ [enabled by default]
-  void yyerror(const char *msg){
-       ^
-syntax.tab.c:1934:9: note: previous implicit declaration of ‘yyerror’ was here
-         yyerror (yymsgp);
-         ^

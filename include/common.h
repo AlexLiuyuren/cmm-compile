@@ -7,9 +7,9 @@
 #include <assert.h>
 #define true 1
 #define false 0
-extern int errorState;
-
 typedef unsigned bool;
+extern bool errorState;
+
 #define kMaxLen 32
 #define STREQ(x, y) (strcmp((x), (y)) == 0)
 #endif

@@ -138,7 +138,7 @@ SymbolNode *addSymbol(const char *name)
 	SymbolNode *hash_slot = kSymbolHashTable[hash_num];
 	SymbolNode *stack_slot =  kSymbolStackHead->symbol_head;
 	SymbolNode *new_node = (SymbolNode *) malloc(sizeof(SymbolNode));
-	
+	new_node->irno = -1;	
 	if (hash_slot == NULL) {
 		hash_slot = new_node;
 		new_node->hash_next = NULL;
