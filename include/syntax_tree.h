@@ -1,7 +1,7 @@
 #ifndef SYNTAX_TREE_H_
 #define SYNTAX_TREE_H_
 
-#define kMaxLen 32 //Max length of symbol
+#include "common.h"
 #define kMaxChildren 15 //Max number of children
 #define kIndent 2
 typedef struct TreeNode{

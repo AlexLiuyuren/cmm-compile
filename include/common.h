@@ -9,4 +9,7 @@
 #define false 0
 extern int errorState;
 
+typedef unsigned bool;
+#define kMaxLen 32
+#define STREQ(x, y) (strcmp((x), (y)) == 0)
 #endif

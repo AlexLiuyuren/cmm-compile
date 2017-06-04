@@ -2,6 +2,7 @@
 #define SYMBOL_TABLE_H_
 #include "common.h"
 #include "syntax_tree.h"
+#include "ir.h"
 #define kHashSize 0x3fffc
 
 typedef struct Type{
@@ -22,6 +23,7 @@ typedef struct StructContent{
 typedef struct SymbolNode{
 	char name[kMaxLen];
 	int lineno;
+	int irno;
 	// either isfunc is true or isdef is true
 	int is_func;
 	int is_def;
@@ -46,13 +48,14 @@ void symbolTableMain(TreeNode *p);
 void buildSymbolTable(TreeNode *p);
 void buildExtDef(TreeNode *p);
 void buildDef(TreeNode *p);
-void buildStmt(TreeNode *p);
+void buildStmt(TreeNode *p, InterCodeNode *retIr);
 void buildVarDec(Type, TreeNode *);
 void buildFunDec(Type node_tpye, TreeNode *p);
 void buildStructDef(TreeNode *p);
 void buildStructVarDec(Type node_type, TreeNode *p);
 Type buildSpecifier(TreeNode *p);
-Type buildExp(TreeNode *p);
+Type buildExp(TreeNode *p, Operand place, InterCodeNode *retIr);
+Type buildCond(TreeNode *p, Operand label_true, Operand label_false, InterCodeNode *retIr);
 
 SymbolNode * addSymbol(const char *name);
 void printType(Type t, char *str);
@@ -66,7 +69,7 @@ StructContent *pushStructContent(const char *name);
 SymbolNode *pushStruct(const char *name);
 void clearSymbolStack();
 void clearStructTable();
-
+Operand generateVar(SymbolNode *p);
 
 extern SymbolNode *kSymbolHashTable[];
 extern SymbolStackNode *kSymbolStackHead;

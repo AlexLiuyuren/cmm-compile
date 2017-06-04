@@ -78,6 +78,22 @@ void freeType(Type *p){
 	}
 }
 
+Operand generateVar(SymbolNode *p)
+{
+    Operand result;
+    result.kind = VARIABLE;
+    if (errorState == true)
+        return result;
+    if (p->irno == -1) {
+        p->irno = InterCodeVarCnt;
+        InterCodeVarCnt++;
+        result.var_no = p->irno;
+    }
+    else
+        result.var_no = p->irno;
+    return result;
+}
+
 unsigned int hash(const char *name)
 {
 	unsigned int val = 0, i;
@@ -176,6 +192,7 @@ void popSymbolStack(){
 SymbolNode *pushStruct(const char *name)
 {
 	SymbolNode *new_node = (SymbolNode *) malloc(sizeof(SymbolNode));
+    new_node->irno = -1;
 	if (kStructTableHead == NULL) {
 		kStructTableHead = new_node;
 		new_node->stack_next = NULL;
